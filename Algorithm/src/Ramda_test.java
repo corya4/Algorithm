@@ -60,6 +60,9 @@ public class Ramda_test {
 		
 		Stream<Students> re = sList.stream().sorted(Comparator.naturalOrder());
 		re.forEach(System.out::println);
+		String a1 = "9334330";
+		String a2 = "9330343";
+		System.out.println(a2.compareTo(a1));
 	}
 
 }
