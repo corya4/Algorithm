@@ -1,0 +1,10 @@
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\bin\Debug\FIL-E_CalcViewer.exe.config
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\bin\Debug\FIL-E_CalcViewer.exe
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\bin\Debug\FIL-E_CalcViewer.pdb
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL-E_CalcViewer.csprojAssemblyReference.cache
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL_E_CalcViewer.FIL_E_CACLVIEWER.resources
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL_E_CalcViewer.Properties.Resources.resources
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL-E_CalcViewer.csproj.GenerateResource.cache
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL-E_CalcViewer.csproj.CoreCompileInputs.cache
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL-E_CalcViewer.exe
+C:\Users\ENITEC\source\repos\FIL-E_CalcViewer\FIL-E_CalcViewer\obj\Debug\FIL-E_CalcViewer.pdb

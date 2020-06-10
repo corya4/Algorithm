@@ -1,0 +1,9 @@
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\bin\Debug\DataGridViewerSource.exe.config
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\bin\Debug\DataGridViewerSource.exe
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\bin\Debug\DataGridViewerSource.pdb
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.csprojAssemblyReference.cache
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.Form1.resources
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.Properties.Resources.resources
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.csproj.GenerateResource.cache
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.exe
+C:\Users\corya.DESKTOP-9PGKBVT\source\repos\DataGridViewerSource\DataGridViewerSource\obj\Debug\DataGridViewerSource.pdb

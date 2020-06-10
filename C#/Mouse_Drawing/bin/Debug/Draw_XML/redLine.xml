@@ -1,0 +1,23 @@
+<Root>
+  <Shape Order="1" Kind="線" BackColor="N">
+    <Position>
+      <Start>50,78</Start>
+      <End>366,105</End>
+    </Position>
+    <Color>255.0.0</Color>
+  </Shape>
+  <Shape Order="2" Kind="線" BackColor="N">
+    <Position>
+      <Start>255,33</Start>
+      <End>98,262</End>
+    </Position>
+    <Color>255.0.0</Color>
+  </Shape>
+  <Shape Order="3" Kind="線" BackColor="N">
+    <Position>
+      <Start>81,201</Start>
+      <End>333,189</End>
+    </Position>
+    <Color>255.0.0</Color>
+  </Shape>
+</Root>

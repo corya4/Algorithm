@@ -1,0 +1,21 @@
+
+ㅡ [필수] HotKey 지정문법
+ㅡ [필수] Send / SendPlay / SendInput / SendMode
+ㅡ [필수] Click / MouseClick / CoordMode
+ㅡ [필수] Sleep
+ㅡ [필수] Loop / Break / Continue
+ㅡ [필수] If / Else / 변수 표현식
+
+ㅡ [옵션] ImageSearch / PixelSearch
+ㅡ [옵션] ControlSend / ControlClick
+ㅡ [옵션] Run / RunWait
+ㅡ [옵션] SetTimer / Critical
+ㅡ [옵션] WinActivate / WinWaitActive
+ㅡ [옵션] Gui 문법 / MsgBox / Reload 문법
+ㅡ [옵션] 자세한 Expression / 연산자 / 변수 문법
+ㅡ [옵션] SingleInstance / 스크립트 설정 문법
+ㅡ [옵션] Object / Array 문법
+ㅡ [옵션] ActiveX 문법 / 웹 자동화
+
+
+출처: https://knowledgeisfree.tistory.com/55 [예지력]
