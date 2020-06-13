@@ -9,38 +9,48 @@ public class BOJ_9465 {
 
 	static int[][] board;
 	static int[][] dp;
+	static int col;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int tcn = Integer.parseInt(br.readLine());
-		int col;
+		
 		while(tcn-- != 0) {
 			col = Integer.parseInt(br.readLine());
-			board = new int[2][col];
+			board = new int[2][col+2];
 			
 			for(int i = 0; i < board.length; i++) {
-				board[i] = Arrays.asList(br.readLine().split(" ")).stream().mapToInt(Integer::parseInt).toArray();
+				String[] temp = br.readLine().split(" ");
+				for(int j = 2; j < board[i].length; j++) {
+					board[i][j] = Integer.parseInt(temp[j-2]);
+				}
 			}
-			dp = new int[col][(int)Math.pow(col, 2)];
-			solv();
 			
+			solv();
 			
 		}// end while
 		
 	}
 
-	static int solv() {
-		/*
-		 * DP이중배열로 i반복당 전 연산값을 더함
-		 * 전 연산값 * 2 로 i+1 배열 수 늘어감
-		 */
+	static void solv() {
+	
 		
+		for(int i = 2; i < col+2; i++) {
+			for(int j = 0; j < 2; j++) {
+				if(j == 0) board[j][i] += Math.max(board[j+1][i-1], board[j+1][i-2]);
+				else board[j][i] += Math.max(board[j-1][i-1], board[j-1][i-2]);
+			}
+		}
 		
-		return 0;
+		System.out.println(Math.max(board[0][col+1], board[1][col+1]));
+		
 	}
 	
+	static int swapIndex(int index) {
+		return index == 0 ? 1 : 0 ;
+	}
 }
-
 
 
