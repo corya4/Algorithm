@@ -11,13 +11,18 @@ public class BOJ_16160 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int[] init = Arrays.asList(br.readLine().split(" ")).stream().mapToInt(Integer::parseInt).toArray();
-		int[] node = new int[init[0]];
+		int H = init[0];
 		//노드 테이블
-		int[] sequence = new int[init[1]];
+		int[] P = new int[init[1]];
 		//수열
-		int length = init[2];
+		int K = init[2];
 		//수열길이
-		sequence = Arrays.asList(br.readLine().split(" ")).stream().mapToInt(Integer::parseInt).toArray();
+		P = Arrays.asList(br.readLine().split(" ")).stream().mapToInt(Integer::parseInt).toArray();
+		
+		int[][] table = new int[(int)(Math.pow(2, H) - 1)][];
+		
+		int answer = -1;
+		
 		
 		
 	}
