@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,15 @@ using System.Windows.Forms;
 
 namespace FTP_Uploader
 {
+
+    /*
+     * 업로드 파일이 일정갯수(30개) 넘어간다면 '경고' 메세지창 출력 [ 'YES', 'NO']
+     * 
+     * 제한파일(FJS, FJM)은 가장 윗단에 출력 후 색상도입
+     * 
+     * 업로드 테이블에 같은 이름 존재할때 수정 메세지창 출력. (Default는 (1))
+     */
+
     public partial class MainForm : Form
     {
 
@@ -36,13 +46,13 @@ namespace FTP_Uploader
         {
             DirectoryInfo info = new DirectoryInfo(ini_path);
             setLocalTable(info);
-            
+
         }
 
         private void setLocalTable(DirectoryInfo info)
         {
             LocalTable.Rows.Clear();
-            foreach(DirectoryInfo d_tmp in info.GetDirectories())
+            foreach (DirectoryInfo d_tmp in info.GetDirectories())
             {
                 LocalTable.Rows.Add(d_tmp.Name, d_tmp.CreationTime.ToString(), "<Dir>");
             }
@@ -52,13 +62,13 @@ namespace FTP_Uploader
                 long size = f_tmp.Length;
                 String[] bytes = { "bytes", "KB", "MB", "GB" };
                 int index = 0;
-                while(size > 1024)
+                while (size > 1024)
                 {
-                    size = size/1024;
+                    size = size / 1024;
                     index++;
                 }
 
-                LocalTable.Rows.Add(f_tmp.Name, f_tmp.CreationTime.ToString(), size+bytes[index]); 
+                LocalTable.Rows.Add(f_tmp.Name, f_tmp.CreationTime.ToString(), size + bytes[index]);
             }
 
             UpdatePath();
@@ -66,7 +76,7 @@ namespace FTP_Uploader
 
         private void UpdatePath()
         {
-            if(LocalPath.Items.Count < 5)
+            if (LocalPath.Items.Count < 5)
             {
                 LocalPath.Items.Add(ini_path);
                 LocalPath.SelectedIndex = LocalPath.Items.Count - 1;
@@ -119,6 +129,15 @@ namespace FTP_Uploader
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
+            for (int i = 0; i < LocalTable.Rows.Count; i++) 
+            {
+
+                if (LocalTable.Rows[i].Selected)
+                {
+                    HostTable.Rows.Add(LocalTable.Rows[i]);
+                }
+
+            }
 
         }
     }
