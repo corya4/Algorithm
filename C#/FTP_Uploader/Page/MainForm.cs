@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTP_Uploader_2.Properties;
+using mem_hkj;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,138 +8,362 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FTP_Uploader
+namespace FTP_Uploader_2
 {
-
-    /*
-     * 업로드 파일이 일정갯수(30개) 넘어간다면 '경고' 메세지창 출력 [ 'YES', 'NO']
-     * 
-     * 제한파일(FJS, FJM)은 가장 윗단에 출력 후 색상도입
-     * 
-     * 업로드 테이블에 같은 이름 존재할때 수정 메세지창 출력. (Default는 (1))
-     */
 
     public partial class MainForm : Form
     {
 
-        String ini_path = "c:\\";
-
-        /*
-         * 現在Pathのフォルダとファイルを集まる //ドラグする時利用
-         */
-        List<DirectoryInfo> dir_path = new List<DirectoryInfo>();
-        List<FileInfo> file_path = new List<FileInfo>();
-
-
-        List<FileInfo> t_files = new List<FileInfo>(); //伝送用ファイルたち
-
+        String mainDir;
+        List<String> files = new List<String>();
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            DirectoryInfo info = new DirectoryInfo(ini_path);
-            setLocalTable(info);
+            /* TreeView.Nodes.Add(CreateDirectoryNode(new DirectoryInfo("C:\\kijung")));
+             String tmp = "C:\\kijung";
+             mainDir = tmp.Substring(0, tmp.LastIndexOf('\\') + 1);*/
 
         }
 
-        private void setLocalTable(DirectoryInfo info)
+
+        /// <summary>
+        /// TreeView SetUp
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private TreeNode CreateDirectoryNode(DirectoryInfo info)
         {
-            LocalTable.Rows.Clear();
-            foreach (DirectoryInfo d_tmp in info.GetDirectories())
+            TreeNode dirNode = new TreeNode(info.Name);
+
+            foreach (DirectoryInfo di in info.GetDirectories())
             {
-                LocalTable.Rows.Add(d_tmp.Name, d_tmp.CreationTime.ToString(), "<Dir>");
+                dirNode.Nodes.Add(CreateDirectoryNode(di));
+            }
+            foreach (FileInfo fi in info.GetFiles())
+            {
+                dirNode.Nodes.Add(new TreeNode(fi.Name));
             }
 
-            foreach (FileInfo f_tmp in info.GetFiles())
+            return dirNode;
+        }
+
+
+        /// <summary>
+        /// AddButton Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MoveTable();
+            files.Clear(); // List Clear
+        }
+
+        /// <summary>
+        /// DataGidView classification
+        /// </summary>
+        private void MoveTable()
+        {
+            foreach (String path in files)
             {
-                long size = f_tmp.Length;
-                String[] bytes = { "bytes", "KB", "MB", "GB" };
-                int index = 0;
-                while (size > 1024)
+                FileInfo info = new FileInfo(path);
+                String ext = Path.GetExtension(info.FullName);
+
+                if (ext.Equals(".fjs"))
                 {
-                    size = size / 1024;
-                    index++;
+                    if (dgv_fjs.Rows.Count != 0)
+                    {
+                        if (MessageBoxEx.Show(this, Resources.EqualFile + '\n' + dgv_fjs.Rows[0].Cells[0].Value + Resources.UpdateFile, Resources.OverLap, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        {
+                            dgv_fjs.Rows.RemoveAt(0);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                    }
+
+                    dgv_fjs.Rows.Add(SetRow(info));
+                }
+                else if (ext.Equals(".fjm"))
+                {
+                    if (dgv_fjm.Rows.Count != 0)
+                    {
+                        if (MessageBoxEx.Show(this, Resources.EqualFile + '\n' + dgv_fjm.Rows[0].Cells[0].Value + Resources.UpdateFile, Resources.OverLap, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        {
+                            dgv_fjm.Rows.RemoveAt(0);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                    }
+
+
+                    dgv_fjm.Rows.Add(SetRow(info));
+                }
+                else
+                {
+
+
+                    dgv_etc.Rows.Add(SetRow(info));
+                }
+            }
+        }
+
+        /// <summary>
+        /// DataGridView Set Row
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private Object[] SetRow(FileInfo info)
+        {
+
+            Object[] row = new Object[5];
+
+            row[0] = Path.GetFileNameWithoutExtension(info.Name);
+            row[1] = info.LastWriteTime;
+            row[2] = Path.GetExtension(info.Name);
+            row[3] = GetFileBytes(info.Length);
+            row[4] = Path.GetDirectoryName(info.FullName);
+
+            return row;
+        }
+
+        /// <summary>
+        /// Get File Size
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private String GetFileBytes(long size)
+        {
+            long tmp_size = size;
+            String bit = "byte";
+
+            if (tmp_size > 1024)
+            {
+                tmp_size = tmp_size / 1024;
+                bit = "KB";
+            }
+
+            if (tmp_size > 1024)
+            {
+                tmp_size = tmp_size / 1024;
+                bit = "MB";
+            }
+
+            if (tmp_size > 1024)
+            {
+                tmp_size = tmp_size / 1024;
+                bit = "GB";
+            }
+
+            if (tmp_size > 1024)
+            {
+                tmp_size = tmp_size / 1024;
+                bit = "TB";
+            }
+
+            return tmp_size + bit;
+        }
+
+        /**
+        /// <summary>
+        /// Node DFS <- get File
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="files"></param>
+        private void CheckNode(TreeNodeCollection nodes, List<FileInfo> files)
+        {
+
+            foreach (TreeNode node in nodes)
+            {
+                String fullPath = mainDir + FullPath(node);
+
+                if (!File.Exists(fullPath))
+                {
+                    CheckNode(node.Nodes, files);
+                    continue;
                 }
 
-                LocalTable.Rows.Add(f_tmp.Name, f_tmp.CreationTime.ToString(), size + bytes[index]);
+                if (!node.Checked) continue;
+
+                files.Add(new FileInfo(fullPath));
+            }
+        }
+        **/
+
+        /// <summary>
+        /// Node <- Get fullName
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private String FullPath(TreeNode node)
+        {
+            if (node.Parent == null)
+            {
+                return node.Text;
             }
 
-            UpdatePath();
+            return FullPath(node.Parent) + "\\" + node.Text;
         }
 
-        private void UpdatePath()
+        /// <summary>
+        /// ChildNode Toggle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        bool flag = true;
+        private void TreeView_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            if (LocalPath.Items.Count < 5)
+            if (flag)
             {
-                LocalPath.Items.Add(ini_path);
-                LocalPath.SelectedIndex = LocalPath.Items.Count - 1;
+                flag = false;
+                ChildNode_Toggle(e.Node, e.Node.Checked);
+                flag = true;
+            }
+        }
+
+
+        /// <summary>
+        /// childNode all Checking
+        /// List Add or List Remove
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="flag"></param>
+        private void ChildNode_Toggle(TreeNode nodes, bool flag)
+        {
+
+
+            foreach (TreeNode node in nodes.Nodes)
+            {
+                ChildNode_Toggle(node, flag);
+            }
+
+            nodes.Checked = flag;
+
+            String filePath = pathBox.SelectedItem.ToString() + FullPath(nodes);
+            if (!File.Exists(filePath)) return;
+
+            if (flag)
+            {
+                files.Add(filePath);
             }
             else
             {
-                LocalPath.Items.RemoveAt(0);
+                files.Remove(filePath);
             }
         }
 
 
-        private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// GridView selected Remove
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
         {
-            new ConnectForm().Show();
-        }
-
-        private void hostToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new AddHost().Show();
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            ini_path = LocalPath.Items[LocalPath.Items.Count - 2].ToString();
-            setLocalTable(new DirectoryInfo(ini_path));
-        }
-
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog o_Dlog = new FolderBrowserDialog();
-
-            if (o_Dlog.ShowDialog() != DialogResult.OK) return;
-
-            ini_path = o_Dlog.SelectedPath + "\\";
-            setLocalTable(new DirectoryInfo(ini_path));
-        }
-
-        private void LocalTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            String m_path = LocalTable.Rows[e.RowIndex].Cells[0].Value.ToString();
-            Console.WriteLine(m_path);
-            if (Directory.Exists(ini_path + m_path))
+            foreach (DataGridViewRow row in dgv_fjs.Rows)
             {
-                ini_path += m_path + "\\";
-                setLocalTable(new DirectoryInfo(ini_path));
+                if (row.Selected) dgv_fjs.Rows.Clear();
             }
 
-        }
-
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < LocalTable.Rows.Count; i++) 
+            foreach (DataGridViewRow row in dgv_fjm.Rows)
             {
+                if (row.Selected) dgv_fjm.Rows.Clear();
+            }
 
-                if (LocalTable.Rows[i].Selected)
+            List<bool> selected = new List<bool>();
+            foreach (DataGridViewRow row in dgv_etc.Rows)
+            {
+                if (row.Selected)
                 {
-                    HostTable.Rows.Add(LocalTable.Rows[i]);
+                    selected.Add(true);
+                }
+                else
+                {
+                    selected.Add(false);
+                }
+            }
+
+            int index = 0;
+            while (true)
+            {
+
+                if (index >= selected.Count) break;
+
+                if (selected[index])
+                {
+                    dgv_etc.Rows.RemoveAt(index);
+                    selected.RemoveAt(index);
+                    continue;
                 }
 
+                index++;
             }
 
+
+        }
+
+
+        /// <summary>
+        /// GridView Foucse <- false
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void panel2_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgv_fjs.Rows)
+            {
+                row.Selected = false;
+            }
+
+            foreach (DataGridViewRow row in dgv_fjs.Rows)
+            {
+                row.Selected = false;
+            }
+
+            foreach (DataGridViewRow row in dgv_etc.Rows)
+            {
+                if (row.Selected)
+                {
+                    row.Selected = false;
+                }
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fDlog = new FolderBrowserDialog();
+
+            if (fDlog.ShowDialog() != DialogResult.OK) return;
+
+            TreeView.Nodes.Clear();
+            String path = fDlog.SelectedPath;
+
+            TreeView.Nodes.Add(CreateDirectoryNode(new DirectoryInfo(path)));
+            pathBox.Items.Add(path.Substring(0, path.LastIndexOf('\\') + 1));
+            pathBox.SelectedIndex = pathBox.Items.Count - 1;
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+
+            if (dgv_fjs.Rows.Count == 0 || dgv_fjm.Rows.Count == 0)
+            {
+                MessageBoxEx.Show(this, Resources.UploadErrorText, Resources.UploadError, MessageBoxButtons.OK);
+                return;
+            }
         }
     }
 }
