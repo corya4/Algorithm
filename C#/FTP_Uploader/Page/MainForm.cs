@@ -1,4 +1,5 @@
-﻿using FTP_Uploader_2.Properties;
+﻿using FTP_Uploader_2.Page;
+using FTP_Uploader_2.Properties;
 using mem_hkj;
 using System;
 using System.Collections;
@@ -25,11 +26,28 @@ namespace FTP_Uploader_2
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// ini Path Read
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-            /* TreeView.Nodes.Add(CreateDirectoryNode(new DirectoryInfo("C:\\kijung")));
-             String tmp = "C:\\kijung";
-             mainDir = tmp.Substring(0, tmp.LastIndexOf('\\') + 1);*/
+            try
+            {
+                StreamReader sr = File.OpenText(Application.StartupPath + "\\init\\ini.txt");
+                String startPath = sr.ReadLine();
+                String currentPath = sr.ReadLine();
+                sr.Dispose();
+
+                pathBox.Items.Add(startPath);
+                currented_path.Add(currentPath);
+                pathBox.SelectedIndex = 0;
+            }catch(Exception ex)
+            {
+                Console.WriteLine("ini.txt Read error");
+            }
 
         }
 
@@ -65,6 +83,7 @@ namespace FTP_Uploader_2
         {
             MoveTable();
             files.Clear(); // List Clear
+
         }
 
         /// <summary>
@@ -72,6 +91,11 @@ namespace FTP_Uploader_2
         /// </summary>
         private void MoveTable()
         {
+
+            Dictionary<int, FileInfo> etcClassial = new Dictionary<int, FileInfo>();
+            int index = 0;
+            //ETC File Check
+
             foreach (String path in files)
             {
                 FileInfo info = new FileInfo(path);
@@ -114,10 +138,54 @@ namespace FTP_Uploader_2
                 }
                 else
                 {
+                    if (checkedETC(info))
+                    {
+                        dgv_etc.Rows.Add(SetRow(info));
+                    }
+                    else
+                    {
+                        etcClassial.Add(index, info);
+                    }
 
-
-                    dgv_etc.Rows.Add(SetRow(info));
+                    index++;
+                    
                 }
+
+            }
+
+            if(etcClassial.Count != 0)
+            {
+                if (MessageBoxEx.Show(this, Resources.EqualFileETC_head + etcClassial.Count + Resources.EqualFileETC_tail, Resources.OverLap, MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+
+                UpdateETC(etcClassial);
+            }
+
+        }
+
+        private bool checkedETC(FileInfo info)
+        {
+            String path = info.FullName;
+
+            foreach(DataGridViewRow row in dgv_etc.Rows)
+            {
+                //Console.WriteLine(row.Cells[0].Value + "  " + Path.GetFileName(path) + "              " + row.Cells[4].Value + "  " + Path.GetDirectoryName(path));
+                //Console.WriteLine(row.Cells[0].Value.ToString().Equals(Path.GetFileName(path)) && row.Cells[4].Value.ToString().Equals(Path.GetDirectoryName(path)));
+
+                if (row.Cells[0].Value.ToString().Equals(Path.GetFileNameWithoutExtension(path)) && row.Cells[4].Value.ToString().Equals(Path.GetDirectoryName(path)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        private void UpdateETC(Dictionary<int, FileInfo> dic)
+        {
+            foreach (KeyValuePair<int, FileInfo> kvp in dic)
+            {
+                dgv_etc.Rows[kvp.Key].SetValues(SetRow(kvp.Value));
             }
         }
 
@@ -139,6 +207,7 @@ namespace FTP_Uploader_2
 
             return row;
         }
+
 
         /// <summary>
         /// Get File Size
@@ -230,6 +299,9 @@ namespace FTP_Uploader_2
             {
                 flag = false;
                 ChildNode_Toggle(e.Node, e.Node.Checked);
+                AddFiles();
+                FJS.Clear();
+                FJM.Clear();
                 flag = true;
             }
         }
@@ -241,9 +313,10 @@ namespace FTP_Uploader_2
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="flag"></param>
+        Dictionary<String, TreeNode> FJS = new Dictionary<String, TreeNode>(); // fjsファイルメモリー
+        Dictionary<String, TreeNode> FJM = new Dictionary<String, TreeNode>(); // fjmファイルメモリー
         private void ChildNode_Toggle(TreeNode nodes, bool flag)
         {
-
 
             foreach (TreeNode node in nodes.Nodes)
             {
@@ -257,14 +330,93 @@ namespace FTP_Uploader_2
 
             if (flag)
             {
-                files.Add(filePath);
+                if (Path.GetExtension(filePath).Equals(Resources.FJS))
+                {
+                    FJS.Add(filePath, nodes);
+                }
+                else if(Path.GetExtension(filePath).Equals(Resources.FJM))
+                {
+                    FJM.Add(filePath, nodes);
+                }
+                else
+                {
+                    files.Add(filePath);
+                }
+
             }
             else
             {
                 files.Remove(filePath);
             }
+
         }
 
+        public int selectIndex = -1;
+        private void AddFiles()
+        {
+            if(FJS.Count <= 1)
+            {
+                foreach(KeyValuePair<String, TreeNode> kvp in FJS)
+                {
+                    files.Add(kvp.Key);
+                }
+            }
+            else
+            {
+                SelectFileForm child = new SelectFileForm(this, FJS);
+                child.ShowDialog();
+
+                int index = 0;
+
+                foreach (KeyValuePair<String, TreeNode> kvp in FJS)
+                {
+
+                    if(index == selectIndex)
+                    {
+                        files.Add(kvp.Key);
+                    }
+                    else
+                    {
+                        kvp.Value.Checked = false;
+                    }
+
+                    index++;
+                }
+
+            }
+
+            if (FJM.Count <= 1)
+            {
+                foreach (KeyValuePair<String, TreeNode> kvp in FJM)
+                {
+                    files.Add(kvp.Key);
+                }
+            }
+            else
+            {
+                SelectFileForm child = new SelectFileForm(this, FJM);
+                child.ShowDialog();
+                int index = 0;
+                foreach (KeyValuePair<String, TreeNode> kvp in FJM)
+                {
+
+                    if (index == selectIndex)
+                    {
+                        files.Add(kvp.Key);
+                    }
+                    else
+                    {
+                        kvp.Value.Checked = false;
+                    }
+
+                    index++;
+                }
+
+            }
+
+
+            selectIndex = -1; //初期化
+        }
 
         /// <summary>
         /// GridView selected Remove
@@ -328,7 +480,7 @@ namespace FTP_Uploader_2
                 row.Selected = false;
             }
 
-            foreach (DataGridViewRow row in dgv_fjs.Rows)
+            foreach (DataGridViewRow row in dgv_fjm.Rows)
             {
                 row.Selected = false;
             }
@@ -342,6 +494,11 @@ namespace FTP_Uploader_2
             }
         }
 
+
+        /// <summary>
+        /// Dialog Path setting
+        /// </summary>
+        bool changed = true;
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fDlog = new FolderBrowserDialog();
@@ -352,10 +509,21 @@ namespace FTP_Uploader_2
             String path = fDlog.SelectedPath;
 
             TreeView.Nodes.Add(CreateDirectoryNode(new DirectoryInfo(path)));
+            //pathBox.Items.Add(path.Substring(0, path.LastIndexOf('\\') + 1));
             pathBox.Items.Add(path.Substring(0, path.LastIndexOf('\\') + 1));
+
+
+            currented_path.Add(TreeView.TopNode.Text);
+            changed = false;
             pathBox.SelectedIndex = pathBox.Items.Count - 1;
         }
 
+
+        /// <summary>
+        /// FileUpload Validate
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_save_Click(object sender, EventArgs e)
         {
 
@@ -363,6 +531,57 @@ namespace FTP_Uploader_2
             {
                 MessageBoxEx.Show(this, Resources.UploadErrorText, Resources.UploadError, MessageBoxButtons.OK);
                 return;
+            }
+        }
+
+
+        /// <summary>
+        /// pathBox Event
+        /// </summary>
+        List<String> currented_path = new List<String>();
+        private void pathBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (changed)
+            {
+                TreeView.Nodes.Clear();
+                TreeView.Nodes.Add(CreateDirectoryNode(new DirectoryInfo(pathBox.Items[pathBox.SelectedIndex].ToString() + currented_path[pathBox.SelectedIndex])));
+                
+            }
+            changed = true;
+        }
+
+
+        /// <summary>
+        /// Create ini_File
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Console.WriteLine(Application.StartupPath+ "\\Init\\ini.txt");
+            try
+            {
+                StreamWriter sw = File.CreateText(Application.StartupPath + "\\Init\\ini.txt");
+                sw.WriteLine(pathBox.SelectedItem.ToString());
+                sw.WriteLine(TreeView.TopNode.Text);
+                sw.Dispose();
+            }catch(IOException IE)
+            {
+                Console.WriteLine("ini Write error");
+            }
+        }
+
+        /// <summary>
+        /// Row select Toggle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(((DataGridView)sender).Rows[e.RowIndex].Selected)
+            {
+                ((DataGridView)sender).Rows[e.RowIndex].Selected = false;
             }
         }
     }

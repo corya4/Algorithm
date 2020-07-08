@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbl_etc = new System.Windows.Forms.Label();
@@ -63,8 +64,8 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.TreeView = new System.Windows.Forms.TreeView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pathBox = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_etc)).BeginInit();
@@ -83,7 +84,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(701, 480);
+            this.panel1.Size = new System.Drawing.Size(709, 550);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -101,7 +102,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(228, 32);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(473, 448);
+            this.panel2.Size = new System.Drawing.Size(481, 518);
             this.panel2.TabIndex = 2;
             this.panel2.Click += new System.EventHandler(this.panel2_Click);
             // 
@@ -111,9 +112,9 @@
             this.lbl_etc.Font = new System.Drawing.Font("MS UI Gothic", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lbl_etc.Location = new System.Drawing.Point(79, 235);
             this.lbl_etc.Name = "lbl_etc";
-            this.lbl_etc.Size = new System.Drawing.Size(30, 12);
+            this.lbl_etc.Size = new System.Drawing.Size(77, 12);
             this.lbl_etc.TabIndex = 9;
-            this.lbl_etc.Text = "ETC";
+            this.lbl_etc.Text = "その他ファイル";
             // 
             // lbl_fjm
             // 
@@ -121,9 +122,9 @@
             this.lbl_fjm.Font = new System.Drawing.Font("MS UI Gothic", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lbl_fjm.Location = new System.Drawing.Point(79, 146);
             this.lbl_fjm.Name = "lbl_fjm";
-            this.lbl_fjm.Size = new System.Drawing.Size(31, 12);
+            this.lbl_fjm.Size = new System.Drawing.Size(108, 12);
             this.lbl_fjm.TabIndex = 8;
-            this.lbl_fjm.Text = "FJM";
+            this.lbl_fjm.Text = "FJMファイル(*.fjm)";
             // 
             // lbl_fjs
             // 
@@ -131,16 +132,16 @@
             this.lbl_fjs.Font = new System.Drawing.Font("MS UI Gothic", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lbl_fjs.Location = new System.Drawing.Point(79, 64);
             this.lbl_fjs.Name = "lbl_fjs";
-            this.lbl_fjs.Size = new System.Drawing.Size(29, 12);
+            this.lbl_fjs.Size = new System.Drawing.Size(103, 12);
             this.lbl_fjs.TabIndex = 7;
-            this.lbl_fjs.Text = "FJS";
+            this.lbl_fjs.Text = "FJSファイル(*.fjs)";
             // 
             // btn_save
             // 
             this.btn_save.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btn_save.Location = new System.Drawing.Point(0, 416);
+            this.btn_save.Location = new System.Drawing.Point(0, 486);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(473, 32);
+            this.btn_save.Size = new System.Drawing.Size(481, 32);
             this.btn_save.TabIndex = 6;
             this.btn_save.Text = "登　録";
             this.btn_save.UseVisualStyleBackColor = true;
@@ -172,8 +173,9 @@
             this.dgv_etc.RowHeadersWidth = 51;
             this.dgv_etc.RowTemplate.Height = 21;
             this.dgv_etc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_etc.Size = new System.Drawing.Size(602, 160);
+            this.dgv_etc.Size = new System.Drawing.Size(610, 230);
             this.dgv_etc.TabIndex = 5;
+            this.dgv_etc.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             // 
             // dataGridViewTextBoxColumn11
             // 
@@ -240,8 +242,9 @@
             this.dgv_fjm.RowHeadersWidth = 51;
             this.dgv_fjm.RowTemplate.Height = 21;
             this.dgv_fjm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_fjm.Size = new System.Drawing.Size(602, 63);
+            this.dgv_fjm.Size = new System.Drawing.Size(610, 44);
             this.dgv_fjm.TabIndex = 4;
+            this.dgv_fjm.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             // 
             // dataGridViewTextBoxColumn6
             // 
@@ -308,8 +311,9 @@
             this.dgv_fjs.RowHeadersWidth = 51;
             this.dgv_fjs.RowTemplate.Height = 21;
             this.dgv_fjs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_fjs.Size = new System.Drawing.Size(602, 68);
+            this.dgv_fjs.Size = new System.Drawing.Size(610, 45);
             this.dgv_fjs.TabIndex = 3;
+            this.dgv_fjs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -370,7 +374,7 @@
             this.dgv_column.RowHeadersVisible = false;
             this.dgv_column.RowHeadersWidth = 51;
             this.dgv_column.RowTemplate.Height = 21;
-            this.dgv_column.Size = new System.Drawing.Size(602, 19);
+            this.dgv_column.Size = new System.Drawing.Size(610, 19);
             this.dgv_column.TabIndex = 2;
             // 
             // col_name
@@ -442,7 +446,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(223, 32);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(5, 448);
+            this.splitter1.Size = new System.Drawing.Size(5, 518);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
             // 
@@ -453,7 +457,7 @@
             this.TreeView.FullRowSelect = true;
             this.TreeView.Location = new System.Drawing.Point(0, 32);
             this.TreeView.Name = "TreeView";
-            this.TreeView.Size = new System.Drawing.Size(223, 448);
+            this.TreeView.Size = new System.Drawing.Size(223, 518);
             this.TreeView.TabIndex = 0;
             this.TreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.TreeView_AfterCheck);
             // 
@@ -461,39 +465,40 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.pathBox});
+            this.pathBox,
+            this.toolStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(701, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(709, 32);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(86, 28);
-            this.toolStripMenuItem1.Text = "パース設定";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // pathBox
             // 
             this.pathBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.pathBox.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(375, 28);
+            this.pathBox.SelectedIndexChanged += new System.EventHandler(this.pathBox_SelectedIndexChanged);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem2.Image")));
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(34, 28);
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(701, 480);
+            this.ClientSize = new System.Drawing.Size(709, 550);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(596, 392);
             this.Name = "MainForm";
             this.Text = "FJMAP";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -546,8 +551,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn col_size;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_path;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripComboBox pathBox;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 
