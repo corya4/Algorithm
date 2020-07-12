@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // 制御されます。アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更します。
-[assembly: AssemblyTitle("FTP_Uploader")]
+[assembly: AssemblyTitle("MainFrame")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FTP_Uploader")]
+[assembly: AssemblyProduct("MainFrame")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // このプロジェクトが COM に公開される場合、次の GUID が typelib の ID になります
-[assembly: Guid("bcbcb6cc-655b-4e77-a1b4-623735ec1f86")]
+[assembly: Guid("222665f0-4864-41b9-a124-c721aa27d389")]
 
 // アセンブリのバージョン情報は、以下の 4 つの値で構成されています:
 //

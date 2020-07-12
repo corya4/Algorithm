@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FTP_Uploader.Properties
+namespace MainFrame.Properties
 {
 
 
