@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,38 +36,59 @@ public class BOJ_16160 {
 			
 		}
 		
-		System.out.println(solv(0, (int)Math.pow(2, 1) - 1, 1,  K, H));
+		int result = -1;
+		int e = 0;
+		
+		if(K != 1) {
+		
+			for(int i = 0; i <= H; i++) {
+				int s = e;
+				e = (int)Math.pow(2, i) - 1;
+				for(int j = s; s < e; s++) {
+					int c = 0;
+					for(int z = s; z < e; z++){
+						if(nodes[j].equals(nodes[z])) {
+							c++;
+						}
+						
+						if(c == K) {
+							result = i;
+							System.exit(0);
+						}
+					}
+				}
+			}
+		}else {
+			result = 1;
+		}
+		
+		
+		System.out.println(result);
+		
+		//System.out.println(solv(0, (int)Math.pow(2, 1) - 1, 1,  K, H));
 		
 	}
 	
-	static int solv(int s, int e, int pow, int c, int h) {
-		
-		if(c == 1) return 1;
-		if(pow > h || e > nodes.length + 1) {
-			return -1;
-		}
-		
-		Map<String, Integer> tcm = new HashMap<String, Integer>();
-		
-		for(int i = s; i < e; i++) {
-			
-			if(tcm.containsKey(nodes[i])) {
-			
-				tcm.put(nodes[i], tcm.get(nodes[i])+1);
-			}else {
-				tcm.put(nodes[i], 1);
-			}
-		}
-		
-		Iterator<String> iter = tcm.keySet().iterator();
-		while(iter.hasNext()) {
-			if(tcm.get(iter.next()) == c) return 1;
-		}
-		
-		int v = solv(e, (int)Math.pow(2, pow+1) - 1 , pow+1, c, h);
-		
-		return v == -1 ? -1 : v + 1;
-	}
+	/*
+	 * static int solv(int s, int e, int pow, int c, int h) {
+	 * 
+	 * if(c == 1) return 1; if(pow > h || e > nodes.length + 1) { return -1; }
+	 * 
+	 * Map<String, Integer> tcm = new HashMap<String, Integer>();
+	 * 
+	 * for(int i = s; i < e; i++) {
+	 * 
+	 * if(tcm.containsKey(nodes[i])) {
+	 * 
+	 * tcm.put(nodes[i], tcm.get(nodes[i])+1); }else { tcm.put(nodes[i], 1); } }
+	 * 
+	 * Iterator<String> iter = tcm.keySet().iterator(); while(iter.hasNext()) {
+	 * if(tcm.get(iter.next()) == c) return 1; }
+	 * 
+	 * int v = solv(e, (int)Math.pow(2, pow+1) - 1 , pow+1, c, h);
+	 * 
+	 * return v == -1 ? -1 : v + 1; }
+	 */
 	
 	static String insert(int[] arr, int H, int P) {
 		String sequence = "";
