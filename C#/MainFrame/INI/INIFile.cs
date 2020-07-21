@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -21,8 +22,15 @@ namespace MainFrame.INI
 
         public static StringBuilder ReadIniFile(StringBuilder sb)
         {
-            GetPrivateProfileString("STARTPATH", "LOAD", "", sb, sb.Capacity, ini_path);
-            return sb;
+            try
+            {
+                GetPrivateProfileString("STARTPATH", "LOAD", "", sb, sb.Capacity, ini_path);
+            }
+            catch (Exception e)
+            {
+                File.Create(ini_path);
+            }
+                return sb;
         }
 
         public static void WriteIniFile(String lastPath)

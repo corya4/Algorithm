@@ -1,4 +1,8 @@
-﻿using MainFrame.INI;
+﻿using MainFrame.Frame;
+using MainFrame.INI;
+using MainFrame.Properties;
+using MainFrame.Sources;
+using mem_hkj;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace MainFrame
 {
@@ -14,13 +19,18 @@ namespace MainFrame
     {
 
         static StringBuilder path = new StringBuilder(255);
-        List<String> deletedList = new List<String>();
-        List<String> selectNode = new List<String>();
-        List<String> addList = new List<String>();
-        List<String> openNode = new List<String>();
+        HostData hostData;
 
-        bool flag = true;
+        public List<String> deletedList = new List<String>();
+        public List<String> selectNode = new List<String>();
+        public List<String> addList = new List<String>();
 
+        public int select_fjm { get; set; }
+        public int select_fjs { get; set; }
+
+        bool overLap = true;
+
+        
         public MainForm()
         {
             InitializeComponent();
@@ -29,11 +39,10 @@ namespace MainFrame
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             INIFile.ReadIniFile(path);
-
-            cbx_path.Items.Add(path);
+            cbx_path.Items.Add(path.ToString());
             cbx_path.SelectedIndex = cbx_path.Items.Count - 1;
+            sortBox.SelectedIndex = 0;
         }
 
         private void CreateDirectoryNode(DirectoryInfo info, TreeNode node)
@@ -84,56 +93,60 @@ namespace MainFrame
                 }
                 else
                 {
+
                     n.ImageKey = fi.Extension;
                 }
+
+                if (imageList.Images.IndexOfKey(fi.Extension) == -1) n.ImageKey = "voidFile.png";
 
                 n.Tag = fi.FullName;
                 node.Nodes.Add(n);
 
             }
 
-            
-        }
 
+        }
 
         private void TreeNode_Click(object sender, TreeNodeMouseClickEventArgs e)
         {
             e.Node.SelectedImageKey = e.Node.ImageKey;
         }
 
-
         private void Tree_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
 
-            if (treeView.TopNode != e.Node)
-            {
-                e.Node.Nodes.Clear();
-                DirectoryInfo di = new DirectoryInfo(e.Node.Tag.ToString());
-                CreateDirectoryNode(di, e.Node);
-            }
+            ExpandNode(e.Node);
 
-
-            //if (!flag) return;
-            ReDrawNode(e.Node);
         }
 
+        private void ExpandNode(TreeNode e)
+        {
+
+            e.Nodes.Clear();
+            DirectoryInfo di = new DirectoryInfo(e.Tag.ToString());
+            CreateDirectoryNode(di, e);
+
+            ReDrawNode();
+        }
 
         private void TreeView_Click(object sender, EventArgs e)
         {
             clearSelected();
         }
+
         private void clearSelected()
         {
             treeView.removePaintFromNodes();
             pnl_left_fill.Focus();
         }
+
         private void clearDictionary()
         {
             treeView.SelectedNode = null;
             treeView.m_coll.Clear();
         }
 
-        
+
         private void RightMove_Click(object sender, EventArgs e)
         {
             if (treeView.SelectedNodes == null) return;
@@ -142,9 +155,9 @@ namespace MainFrame
 
             foreach (TreeNode node in treeView.SelectedNodes)
             {
-                
+
                 String tag = node.Tag.ToString();
-                
+
                 if (Directory.Exists(tag))
                 {
                     moveNodes(tag);
@@ -155,106 +168,14 @@ namespace MainFrame
                 }
             }
 
-
-            ReDrawNode(treeView.TopNode);
-            ToggleNode(treeView.TopNode);
-
-            openNode.Clear();
+            ReDrawNode();
             clearSelected();
-            clearDictionary();
 
-
-        }
-
-        private List<String> GetDataRowFullPath()
-        {
-            addList.Clear();
-
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                addList.Add(row.Cells[2].Value.ToString());
-            }
-            
-            return addList;
-        }
-
-
-        
-        private void LeftMove_Click(object sender, EventArgs e)
-        {
-
-            if (dgv.SelectedRows == null) return;
-
-            foreach (DataGridViewRow row in dgv.SelectedRows)
-            {
-                String key = row.Cells[2].Value.ToString();
-                deletedList.Add(key);
-                dgv.Rows.Remove(row);
-                
-            }
-
-            SelectedReMove();
-            ReDrawNode(treeView.TopNode);
-
-            ToggleNode(treeView.TopNode);
-
-            openNode.Clear();
-            deletedList.Clear();
-            dgv.ClearSelection();
-            clearSelected();
-            clearDictionary();
-        }
-
-  
-
-        //boolean 형으로 연산 줄이기
-        private void ToggleNode(TreeNode node)
-        {
-            
-            foreach(TreeNode n in node.Nodes)
-            {
-
-                if (n.Tag == null) continue;
-
-                if (n.Nodes != null)
-                {
-                    ToggleNode(n);
-                }
-
-                String dir = n.Tag.ToString();
-
-                if (openNode.Contains(dir))
-                {
-                    
-                    if (n.IsExpanded)
-                    {
-                        n.Collapse(true);
-                        flag = false;
-                        n.Expand();
-                        flag = true;
-                    }
-                }
-
-            }
+            RowSort();
+            RowCheck();
+            Header_Count();
 
         }
-
-        private void SelectedReMove()
-        {
-            foreach (String tag in deletedList)
-            {
-                selectNode.Remove(tag);
-
-                String dir = Path.GetDirectoryName(tag);
-
-                if (!openNode.Contains(dir))
-                {
-                    openNode.Add(dir);
-                }
-
-            }
-        }
-
 
         private void moveNodes(String tag)
         {
@@ -272,30 +193,85 @@ namespace MainFrame
             }
         }
 
-    
+
         private void moveNode(String tag)
         {
             if (!addList.Contains(tag))
             {
                 dgv.Rows.Add(Path.GetFileName(tag), Path.GetDirectoryName(tag), tag);
                 selectNode.Add(tag);
+
+            }
+        }
+
+        private List<String> GetDataRowFullPath()
+        {
+            addList.Clear();
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                addList.Add(row.Cells[2].Value.ToString());
+            }
+
+            return addList;
+        }
+
+
+        private void LeftMove_Click(object sender, EventArgs e)
+        {
+
+            if (dgv.SelectedRows == null) return;
+            foreach (DataGridViewRow row in dgv.SelectedRows)
+            {
+                String key = row.Cells[2].Value.ToString();
+                deletedList.Add(key);
+                dgv.Rows.Remove(row);
+
+            }
+
+            SelectedReMove();
+            ReDrawNode();
+
+            deletedList.Clear();
+            dgv.ClearSelection();
+
+            clearSelected();
+            clearDictionary();
+            RowCheck();
+            Header_Count();
+        }
+
+
+        private void SelectedReMove()
+        {
+            foreach (String tag in deletedList)
+            {
+                selectNode.Remove(tag);
+
             }
         }
 
 
+        private void ReDrawNode()
+        {
+
+            ReDrawNode(treeView.Nodes[0]);
+        }
+
         private void ReDrawNode(TreeNode node)
         {
 
-            if (node.Nodes != null)
+            if (node.Tag == null)
             {
-                
-                foreach (TreeNode n in node.Nodes)
-                {
-                    ReDrawNode(n);
-                }
+                return;
+
             }
 
-            if (node.Tag == null) return;
+            foreach (TreeNode n in node.Nodes)
+            {
+                ReDrawNode(n);
+            }
+
 
             if (selectNode.Contains(node.Tag.ToString()))
             {
@@ -304,17 +280,11 @@ namespace MainFrame
             else
             {
                 node.ForeColor = Color.Black;
-                  
+
             }
 
-
-
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            INIFile.WriteIniFile(cbx_path.SelectedItem.ToString());
-        }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
@@ -332,6 +302,7 @@ namespace MainFrame
             clearDictionary();
 
             String path = cbx_path.SelectedItem.ToString();
+            if (path.Equals("")) path = "C:";
 
             DirectoryInfo di = new DirectoryInfo(path.ToString());
             TreeNode node = new TreeNode(di.Name);
@@ -341,7 +312,7 @@ namespace MainFrame
             CreateDirectoryNode(di, node);
 
             treeView.TopNode.Expand();
-            
+
 
         }
 
@@ -350,13 +321,14 @@ namespace MainFrame
             String path = cbx_path.SelectedItem.ToString();
 
             int lastIndex = path.LastIndexOf("\\");
+
             if (lastIndex < 2) return;
 
             path = path.Substring(0, lastIndex);
 
-            if(path.IndexOf("\\") == -1)
+            if (path.IndexOf("\\") == -1)
             {
-                cbx_path.Items.Add(path+"\\");
+                cbx_path.Items.Add(path + "\\");
             }
             else
             {
@@ -367,41 +339,273 @@ namespace MainFrame
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void RowCheck()
         {
-            Application.Exit();
+
+            overLap = true;
+
+            Dictionary<String, List<DataGridViewRow>> list = new Dictionary<string, List<DataGridViewRow>>();
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                String name = row.Cells[0].Value.ToString();
+                if (list.ContainsKey(name))
+                {
+                    list[name].Add(row);
+                    
+                }
+                else
+                {
+                    list.Add(name, new List<DataGridViewRow> { row });
+                }
+            }
+
+            foreach (KeyValuePair<String, List<DataGridViewRow>> pair in list)
+            {
+                List<DataGridViewRow> rows = pair.Value;
+                if(rows.Count == 1)
+                {
+                    rows[0].DefaultCellStyle.BackColor = Color.White;
+                    rows[0].Cells[0].Style.ForeColor = Color.Black;
+                    rows[0].Cells[1].Style.ForeColor = Color.Black;
+                    continue;
+                }
+                
+                foreach(DataGridViewRow row in rows)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.Cells[0].Style.ForeColor = Color.White;
+                    row.Cells[1].Style.ForeColor = Color.White;
+                }
+
+                overLap = false;
+            }
+
         }
+
+        private void RowSort()
+        {
+            int index = sortBox.SelectedIndex;
+
+            switch (index)
+            {
+
+                case 0:
+                    dgv.Sort(new DataSort(true, 0, 0, 0));
+                    break;
+                case 1:
+                    dgv.Sort(new DataSort(false, 3, 2, 1));
+                    break;
+                case 2:
+                    dgv.Sort(new DataSort(false, 2, 3, 1));
+                    break;
+                case 3:
+                    dgv.Sort(new DataSort(false, 2 ,1, 3));
+                    break;
+
+            }
+           
+        }
+
 
         private void button5_Click(object sender, EventArgs e)
         {
             dgv.Rows.Clear();
             selectNode.Clear();
 
-            String topNode = treeView.TopNode.Tag.ToString();
-            treeView.TopNode.Nodes.Clear();
-            DirectoryInfo di = new DirectoryInfo(topNode);
-            CreateDirectoryNode(di, treeView.TopNode);
+            ReDrawNode();
         }
 
 
-        //중복 처리 [ 동적 폼 ]
         private void button3_Click(object sender, EventArgs e)
         {
-            
+
+            List<DataGridViewRow> fjm_rows = new List<DataGridViewRow>();
+            List<DataGridViewRow> fjs_rows = new List<DataGridViewRow>();
+
+
+            bool isOver = true;
+
+            StringBuilder ErrorMessage = new StringBuilder();
+
+            if (!overLap) ErrorMessage.Append("  重複したファイルがあります。" + "\n");
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                String ext = Path.GetExtension(row.Cells[0].Value.ToString());
+                String name = row.Cells[0].Value.ToString();
+
+                switch (ext)
+                {
+                    case ".fjm":
+                        fjm_rows.Add(row);
+                        break;
+                    case ".fjs":
+                        fjs_rows.Add(row);
+                        break;
+                }
+
+
+            }
+
+            //Exception bool
+            if (fjm_rows.Count == 0)
+            {
+                ErrorMessage.Append("  FJMファイルがありません。" + "\n");
+            }
+            else if (fjm_rows.Count != 1)
+            {
+                isOver = false;
+            }
+
+
+            if (fjs_rows.Count == 0)
+            {
+                ErrorMessage.Append("  FJSファイルがありません。" + "\n");
+            }
+            else if (fjs_rows.Count != 1)
+            {
+                isOver = false;
+            }
+            //end
+
+
+            if (ErrorMessage.Length != 0)
+            {
+                MessageBoxEx.Show(this, ErrorMessage.ToString(), Resources.NULLERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }// NullPoint if
+
+
+            if (!isOver)
+            {
+                if (fjm_rows.Count > 1)
+                {
+                    SelectForm sForm = new SelectForm(this, "FJMファイル", fjm_rows);
+                    sForm.ShowDialog();
+
+                }
+
+                if (fjs_rows.Count > 1)
+                {
+                    SelectForm sForm = new SelectForm(this, "FJSファイル", fjs_rows);
+                    sForm.ShowDialog();
+
+                }
+
+            }//OverLap if
+
+
+            bool selectNull = true;
+
+            if (select_fjm >= 0)
+            {
+                for (int i = 0; i < fjm_rows.Count; i++)
+                {
+                    if (i != select_fjm)
+                    {
+                        DataGridViewRow row = fjm_rows[i];
+                        String tag = row.Cells[2].Value.ToString();
+
+                        dgv.Rows.Remove(row);
+                        selectNode.Remove(tag);
+                    }
+                }
+            }
+            else if(select_fjm == -1)
+            {
+                selectNull = false;
+            }
+
+
+            if (select_fjs >= 0)
+            {
+                for (int i = 0; i < fjs_rows.Count; i++)
+                {
+                    if (i != select_fjs)
+                    {
+                        DataGridViewRow row = fjs_rows[i];
+                        String tag = row.Cells[2].Value.ToString();
+
+                        dgv.Rows.Remove(row);
+                        selectNode.Remove(tag);
+                    }
+                }
+            }
+            else if(select_fjs == -1)
+            {
+                selectNull = false;
+            }
+
+            select_fjm = -2;
+            select_fjs = -2;
+
+            if (!selectNull) return;
+
+
+            ReDrawNode();
+
+
+            StringBuilder file_log = new StringBuilder();
+            foreach(DataGridViewRow row in dgv.Rows)
+            {
+                file_log.Append(row.Cells[0].Value.ToString() + '\n');
+            }
+
+            if (MessageBoxEx.Show(this, file_log.ToString(), "UPLOAD FILES" , MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+
+
+            //
+            //ファイル伝送ソース
+            //
+
         }
 
-        private void dgv_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+
+        private void Header_Count()
         {
-            String str1 = Path.GetExtension(dgv.Rows[e.RowIndex1].Cells[0].Value.ToString());
-            String str2 = Path.GetExtension(dgv.Rows[e.RowIndex2].Cells[0].Value.ToString());
+            int rank = 1;
 
-            int r1 = str1.Equals(".fjm") ? 3 : str1.Equals(".fjs") ? 2 : 1;
-            int r2 = str2.Equals(".fjm") ? 3 : str2.Equals(".fjs") ? 2 : 1;
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                row.HeaderCell.Value = rank + "";
 
-            e.SortResult = r2 - r1;
+                String ext = Path.GetExtension(row.Cells[0].Value.ToString());
+                if (ext.Equals(Resources.EXT_FJM))
+                {
+                    row.Cells[0].Style.ForeColor = Color.DarkViolet;
+                    row.Cells[1].Style.ForeColor = Color.DarkViolet;
+                }
+                else if (ext.Equals(Resources.EXT_FJS))
+                {
+                    row.Cells[0].Style.ForeColor = Color.OrangeRed;
+                    row.Cells[1].Style.ForeColor = Color.OrangeRed;
+                }
+                else
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
 
-            e.Handled = true;
+                rank++;
+            }
+
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            INIFile.WriteIniFile(cbx_path.SelectedItem.ToString());
+        }
+
+        private void sortBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RowSort();
+            Header_Count();
+        }
+
+        private void 設定ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfirmForm confirm = new ConfirmForm(hostData);
+            confirm.Show();
+        }
     }
 }
