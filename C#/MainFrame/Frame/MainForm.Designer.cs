@@ -44,14 +44,17 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel4 = new System.Windows.Forms.Panel();
             this.pnl_right = new System.Windows.Forms.Panel();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.sortBox = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.pnl_dgv = new System.Windows.Forms.Panel();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.col_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_path = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.sortBox = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.pnl_btns = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -62,8 +65,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ホストToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.設定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
             this.pnl_left.SuspendLayout();
             this.pnl_left_fill.SuspendLayout();
             this.pnl_left_head.SuspendLayout();
@@ -72,9 +77,10 @@
             this.pnl_main.SuspendLayout();
             this.panel4.SuspendLayout();
             this.pnl_right.SuspendLayout();
-            this.toolStrip2.SuspendLayout();
             this.pnl_dgv.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            this.panel5.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
             this.pnl_btns.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -88,10 +94,10 @@
             this.pnl_left.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnl_left.Location = new System.Drawing.Point(0, 0);
             this.pnl_left.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pnl_left.MinimumSize = new System.Drawing.Size(327, 432);
+            this.pnl_left.MinimumSize = new System.Drawing.Size(337, 0);
             this.pnl_left.Name = "pnl_left";
             this.pnl_left.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.pnl_left.Size = new System.Drawing.Size(327, 457);
+            this.pnl_left.Size = new System.Drawing.Size(337, 429);
             this.pnl_left.TabIndex = 0;
             // 
             // pnl_left_fill
@@ -102,7 +108,7 @@
             this.pnl_left_fill.Location = new System.Drawing.Point(12, 29);
             this.pnl_left_fill.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_left_fill.Name = "pnl_left_fill";
-            this.pnl_left_fill.Size = new System.Drawing.Size(315, 428);
+            this.pnl_left_fill.Size = new System.Drawing.Size(325, 400);
             this.pnl_left_fill.TabIndex = 1;
             // 
             // treeView
@@ -116,7 +122,7 @@
             this.treeView.Name = "treeView";
             this.treeView.SelectedImageIndex = 0;
             this.treeView.SelectedNodes = ((System.Collections.ArrayList)(resources.GetObject("treeView.SelectedNodes")));
-            this.treeView.Size = new System.Drawing.Size(313, 426);
+            this.treeView.Size = new System.Drawing.Size(323, 398);
             this.treeView.TabIndex = 1;
             this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.Tree_BeforeExpand);
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeNode_Click);
@@ -138,16 +144,16 @@
             this.pnl_left_head.Location = new System.Drawing.Point(12, 0);
             this.pnl_left_head.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_left_head.Name = "pnl_left_head";
-            this.pnl_left_head.Size = new System.Drawing.Size(315, 29);
+            this.pnl_left_head.Size = new System.Drawing.Size(325, 29);
             this.pnl_left_head.TabIndex = 0;
             // 
             // cbx_path
             // 
-            this.cbx_path.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbx_path.Dock = System.Windows.Forms.DockStyle.Right;
             this.cbx_path.FormattingEnabled = true;
-            this.cbx_path.Location = new System.Drawing.Point(80, 0);
+            this.cbx_path.Location = new System.Drawing.Point(66, 0);
             this.cbx_path.Name = "cbx_path";
-            this.cbx_path.Size = new System.Drawing.Size(235, 26);
+            this.cbx_path.Size = new System.Drawing.Size(259, 30);
             this.cbx_path.TabIndex = 1;
             this.cbx_path.SelectedIndexChanged += new System.EventHandler(this.cbx_path_SelectedIndexChanged);
             // 
@@ -181,7 +187,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 26);
+            this.toolStripButton1.Size = new System.Drawing.Size(29, 26);
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -191,7 +197,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(24, 26);
+            this.toolStripButton2.Size = new System.Drawing.Size(29, 26);
             this.toolStripButton2.Text = "toolStripButton2";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -202,17 +208,17 @@
             this.pnl_main.Controls.Add(this.pnl_left);
             this.pnl_main.Controls.Add(this.panel2);
             this.pnl_main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_main.Location = new System.Drawing.Point(0, 25);
+            this.pnl_main.Location = new System.Drawing.Point(0, 26);
             this.pnl_main.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_main.Name = "pnl_main";
-            this.pnl_main.Size = new System.Drawing.Size(823, 492);
+            this.pnl_main.Size = new System.Drawing.Size(823, 483);
             this.pnl_main.TabIndex = 1;
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(327, 0);
+            this.splitter1.Location = new System.Drawing.Point(337, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(10, 457);
+            this.splitter1.Size = new System.Drawing.Size(10, 429);
             this.splitter1.TabIndex = 7;
             this.splitter1.TabStop = false;
             // 
@@ -221,71 +227,33 @@
             this.panel4.Controls.Add(this.pnl_right);
             this.panel4.Controls.Add(this.pnl_btns);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(327, 0);
+            this.panel4.Location = new System.Drawing.Point(337, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(496, 457);
+            this.panel4.Size = new System.Drawing.Size(486, 429);
             this.panel4.TabIndex = 6;
             // 
             // pnl_right
             // 
             this.pnl_right.AutoSize = true;
-            this.pnl_right.Controls.Add(this.toolStrip2);
             this.pnl_right.Controls.Add(this.pnl_dgv);
+            this.pnl_right.Controls.Add(this.panel5);
             this.pnl_right.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_right.Location = new System.Drawing.Point(70, 0);
             this.pnl_right.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_right.Name = "pnl_right";
             this.pnl_right.Padding = new System.Windows.Forms.Padding(0, 0, 12, 0);
-            this.pnl_right.Size = new System.Drawing.Size(426, 457);
+            this.pnl_right.Size = new System.Drawing.Size(416, 429);
             this.pnl_right.TabIndex = 4;
-            // 
-            // toolStrip2
-            // 
-            this.toolStrip2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolStrip2.BackgroundImage")));
-            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sortBox,
-            this.toolStripLabel1,
-            this.toolStripButton3,
-            this.toolStripLabel2});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(414, 27);
-            this.toolStrip2.TabIndex = 5;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // sortBox
-            // 
-            this.sortBox.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.sortBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sortBox.Items.AddRange(new object[] {
-            "名前",
-            "拡張子-FJM",
-            "拡張子-FJS",
-            "拡張子-TXT"});
-            this.sortBox.Name = "sortBox";
-            this.sortBox.Size = new System.Drawing.Size(121, 27);
-            this.sortBox.SelectedIndexChanged += new System.EventHandler(this.sortBox_SelectedIndexChanged);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLabel1.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(43, 24);
-            this.toolStripLabel1.Text = "整列準";
             // 
             // pnl_dgv
             // 
             this.pnl_dgv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_dgv.Controls.Add(this.dgv);
             this.pnl_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_dgv.Location = new System.Drawing.Point(0, 0);
+            this.pnl_dgv.Location = new System.Drawing.Point(0, 28);
             this.pnl_dgv.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_dgv.Name = "pnl_dgv";
-            this.pnl_dgv.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.pnl_dgv.Size = new System.Drawing.Size(414, 457);
+            this.pnl_dgv.Size = new System.Drawing.Size(404, 401);
             this.pnl_dgv.TabIndex = 4;
             // 
             // dgv
@@ -302,7 +270,7 @@
             this.col_folder,
             this.col_path});
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv.Location = new System.Drawing.Point(0, 32);
+            this.dgv.Location = new System.Drawing.Point(0, 0);
             this.dgv.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
@@ -310,7 +278,7 @@
             this.dgv.RowHeadersWidth = 51;
             this.dgv.RowTemplate.Height = 24;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(412, 423);
+            this.dgv.Size = new System.Drawing.Size(402, 399);
             this.dgv.TabIndex = 3;
             // 
             // col_name
@@ -341,7 +309,69 @@
             this.col_path.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.col_path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.col_path.Visible = false;
-            this.col_path.Width = 43;
+            this.col_path.Width = 36;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.toolStrip2);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel5.Location = new System.Drawing.Point(0, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(404, 28);
+            this.panel5.TabIndex = 6;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolStrip2.BackgroundImage")));
+            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sortBox,
+            this.toolStripLabel1,
+            this.toolStripButton3,
+            this.toolStripLabel2});
+            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(404, 28);
+            this.toolStrip2.TabIndex = 5;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // sortBox
+            // 
+            this.sortBox.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.sortBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sortBox.Items.AddRange(new object[] {
+            "名前",
+            "拡張子-FJM",
+            "拡張子-FJS",
+            "拡張子-TXT"});
+            this.sortBox.Name = "sortBox";
+            this.sortBox.Size = new System.Drawing.Size(121, 28);
+            this.sortBox.SelectedIndexChanged += new System.EventHandler(this.sortBox_SelectedIndexChanged);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLabel1.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(54, 25);
+            this.toolStripLabel1.Text = "整列準";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(29, 25);
+            this.toolStripButton3.Text = "toolStripButton3";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(98, 25);
+            this.toolStripLabel2.Text = "接続できません";
             // 
             // pnl_btns
             // 
@@ -351,7 +381,7 @@
             this.pnl_btns.Location = new System.Drawing.Point(0, 0);
             this.pnl_btns.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnl_btns.Name = "pnl_btns";
-            this.pnl_btns.Size = new System.Drawing.Size(70, 457);
+            this.pnl_btns.Size = new System.Drawing.Size(70, 429);
             this.pnl_btns.TabIndex = 2;
             // 
             // button2
@@ -384,21 +414,23 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button5);
             this.panel2.Controls.Add(this.button3);
+            this.panel2.Controls.Add(this.panel6);
+            this.panel2.Controls.Add(this.button5);
+            this.panel2.Controls.Add(this.panel7);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 457);
+            this.panel2.Location = new System.Drawing.Point(0, 429);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.panel2.Size = new System.Drawing.Size(823, 35);
+            this.panel2.Size = new System.Drawing.Size(823, 54);
             this.panel2.TabIndex = 5;
             // 
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.SeaShell;
-            this.button5.Location = new System.Drawing.Point(397, 0);
+            this.button5.Location = new System.Drawing.Point(407, 10);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(115, 35);
+            this.button5.Size = new System.Drawing.Size(115, 34);
             this.button5.TabIndex = 2;
             this.button5.Text = "クリア";
             this.button5.UseVisualStyleBackColor = false;
@@ -408,9 +440,9 @@
             // 
             this.button3.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.button3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button3.Location = new System.Drawing.Point(698, 0);
+            this.button3.Location = new System.Drawing.Point(698, 10);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(115, 35);
+            this.button3.Size = new System.Drawing.Size(115, 34);
             this.button3.TabIndex = 0;
             this.button3.Text = "登　　録";
             this.button3.UseVisualStyleBackColor = false;
@@ -422,57 +454,73 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(823, 25);
+            this.panel1.Size = new System.Drawing.Size(823, 26);
             this.panel1.TabIndex = 2;
             // 
             // menuStrip1
             // 
             this.menuStrip1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("menuStrip1.BackgroundImage")));
+            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ホストToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(823, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(823, 26);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // ホストToolStripMenuItem
             // 
             this.ホストToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.設定ToolStripMenuItem});
+            this.設定ToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem1});
             this.ホストToolStripMenuItem.Name = "ホストToolStripMenuItem";
-            this.ホストToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.ホストToolStripMenuItem.Text = "ホスト";
+            this.ホストToolStripMenuItem.Size = new System.Drawing.Size(88, 22);
+            this.ホストToolStripMenuItem.Text = "メニュー(&M)";
             // 
             // 設定ToolStripMenuItem
             // 
             this.設定ToolStripMenuItem.Name = "設定ToolStripMenuItem";
-            this.設定ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.設定ToolStripMenuItem.Text = "設定";
+            this.設定ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.設定ToolStripMenuItem.Text = "設定(&O)";
             this.設定ToolStripMenuItem.Click += new System.EventHandler(this.設定ToolStripMenuItem_Click);
             // 
-            // toolStripButton3
+            // toolStripSeparator1
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
             // 
-            // toolStripLabel2
+            // toolStripMenuItem1
             // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(79, 24);
-            this.toolStripLabel2.Text = "接続できません";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem1.Text = "閉じる(&Q)";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // panel6
+            // 
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel6.Location = new System.Drawing.Point(0, 44);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(813, 10);
+            this.panel6.TabIndex = 0;
+            // 
+            // panel7
+            // 
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel7.Location = new System.Drawing.Point(0, 0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(813, 10);
+            this.panel7.TabIndex = 3;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(823, 517);
+            this.ClientSize = new System.Drawing.Size(823, 509);
             this.Controls.Add(this.pnl_main);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Meiryo UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -494,11 +542,12 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.pnl_right.ResumeLayout(false);
-            this.pnl_right.PerformLayout();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
             this.pnl_dgv.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.pnl_btns.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -545,6 +594,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn col_path;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panel7;
     }
 }
 

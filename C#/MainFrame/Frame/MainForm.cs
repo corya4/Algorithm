@@ -554,11 +554,12 @@ namespace MainFrame
 
             if (MessageBoxEx.Show(this, file_log.ToString(), "UPLOAD FILES" , MessageBoxButtons.OKCancel) != DialogResult.OK) return;
 
-
             //
             //ファイル伝送ソース
             //
 
+            FileUpload load = new FileUpload(hostData, selectNode);
+            load.Uploader();
         }
 
 
@@ -606,6 +607,11 @@ namespace MainFrame
         {
             ConfirmForm confirm = new ConfirmForm(hostData);
             confirm.Show();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
