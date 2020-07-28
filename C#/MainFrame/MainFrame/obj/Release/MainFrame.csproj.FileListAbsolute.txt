@@ -1,0 +1,12 @@
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\bin\Release\MainFrame.exe.config
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\bin\Release\MainFrame.exe
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\bin\Release\MainFrame.pdb
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\bin\Release\TreeViewMS.dll
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.csprojAssemblyReference.cache
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.MainForm.resources
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.Properties.Resources.resources
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.csproj.GenerateResource.cache
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.csproj.CoreCompileInputs.cache
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.csproj.CopyComplete
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.exe
+C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Release\MainFrame.pdb
