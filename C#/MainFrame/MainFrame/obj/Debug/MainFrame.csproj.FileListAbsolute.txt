@@ -8,6 +8,5 @@ C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.csproj.Core
 C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.exe
 C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.pdb
 C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.MainForm.resources
-C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.Frame.SelectForm.resources
 C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.Frame.ConfirmForm.resources
 C:\Users\ENITEC\source\repos\MainFrame\MainFrame\obj\Debug\MainFrame.TreeViewMS.resources

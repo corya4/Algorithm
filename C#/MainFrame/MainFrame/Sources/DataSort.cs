@@ -12,18 +12,15 @@ namespace MainFrame.Sources
 {
     class DataSort : System.Collections.IComparer
     {
-        bool NAME;
-        int FJS;
-        int FJM;
-        int TXT;
+        int index;
+        List<String> ext;
 
 
-        public DataSort(bool f, int i1, int i2, int i3)
+        public DataSort(int index, List<String> ext)
         {
-            NAME = f;
-            FJS = i1;
-            FJM = i2;
-            TXT = i3;
+            Console.WriteLine(index);
+            this.index = index;
+            this.ext = ext;
         }
 
         int IComparer.Compare(object x, object y)
@@ -34,25 +31,36 @@ namespace MainFrame.Sources
             String f1 = r1.Cells[0].Value.ToString();
             String f2 = r2.Cells[0].Value.ToString();
 
-            if (NAME)
+            String n1 = Path.GetFileName(f1);
+            String n2 = Path.GetFileName(f2);
+
+            if (index == 0)
             {
-
-                String n1 = Path.GetFileName(f1);
-                String n2 = Path.GetFileName(f2);
-
                 return n1.CompareTo(n2);
 
             }
             else
             {
+                String e1 = Path.GetExtension(n1);
+                String e2 = Path.GetExtension(n2);
 
-                String ex1 = Path.GetExtension(f1);
-                String ex2 = Path.GetExtension(f2);
+                if(ext.IndexOf(e1) == index && ext.IndexOf(e2) == index)
+                {
+                    return n1.CompareTo(n2);
+                }
+                
+                else if (ext.IndexOf(e1) == index)
+                {
+                    return -1;
+                }
 
-                int e1 = ex1.Equals(Resources.EXT_FJS) ? FJS : ex1.Equals(Resources.EXT_FJM) ? FJM : TXT;
-                int e2 = ex2.Equals(Resources.EXT_FJS) ? FJS : ex2.Equals(Resources.EXT_FJM) ? FJM : TXT;
+                else if (ext.IndexOf(e2) == index)
+                {
+                    return 1;
+                }
 
-                return e2 - e1;
+                else return n1.CompareTo(n2);
+
             }
 
         }
