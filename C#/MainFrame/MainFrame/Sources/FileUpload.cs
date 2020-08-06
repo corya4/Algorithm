@@ -1,4 +1,5 @@
-﻿using mem_hkj;
+﻿using MainFrame.Properties;
+using mem_hkj;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,7 @@ namespace MainFrame.Sources
         MainForm main;
         HostData confirm;
         List<String> files;
+        List<String> errorFiles;
 
         FtpWebRequest request;
 
@@ -24,22 +26,14 @@ namespace MainFrame.Sources
             this.main = main;
             confirm = data;
             files = list;
+            errorFiles = new List<String>();
         }
 
         public void Uploader(String folder, HostData hostData)
         {
-            request = WebRequest.Create(new Uri(String.Format(@"ftp://{0}{1}/{2}", hostData.IP, hostData.UploadPath, folder))) as FtpWebRequest;
-            request.Credentials = new NetworkCredential(hostData.ID, hostData.PW);
-            request.Method = WebRequestMethods.Ftp.MakeDirectory;
-
-            try
+            
+            if(!DirectoryCheck(folder, hostData))
             {
-                WebResponse reps = request.GetResponse();
-                reps.Close();
-            }
-            catch(Exception e)
-            {
-                main.strip_status.Text = "フォルダ生成中にエラーが発生しました";
                 return;
             }
 
@@ -52,22 +46,104 @@ namespace MainFrame.Sources
                 }
 
             }//Loop end
+            
+            if(errorFiles.Count > 0)
+            {
+                MessageBoxEx.Show(main, SetErrorFiles(), Resources.ERROR_NOTSEARCH, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
-            main.strip_status.Text = "伝送が完了しました";
+        }
+
+        private bool DirectoryCheck(String folder, HostData hostData)
+        {
+
+            try
+            {
+                request = WebRequest.Create(new Uri(String.Format(@"ftp://{0}{1}/{2}", hostData.IP, hostData.UploadPath, folder))) as FtpWebRequest;
+
+                request.Credentials = new NetworkCredential(hostData.ID, hostData.PW);
+  
+                request.Method = WebRequestMethods.Ftp.MakeDirectory;
+
+                WebResponse reps = request.GetResponse();
+                reps.Close();
+
+                Console.WriteLine("Connect");
+                return true;
+            }
+            catch (WebException We)
+            {
+
+                if (We.Message.Contains(Resources.NOTLOGIN))
+                {
+                    MessageBoxEx.Show(main, Resources.SERVER_LOGIN_ERROR, Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBoxEx.Show(main, Resources.HOST_CONNECT_ERROR, Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+
+
+            }
+            catch(UriFormatException Ue)
+            {
+                MessageBoxEx.Show(main, Resources.HOST_CONNECT_ERROR, Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+            return false;
+        }
+
+        private String SetErrorFiles()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("下記のパイルが見つかりません。"+ '\n');
+
+            foreach(String f in errorFiles)
+            {
+                sb.Append(f + '\n');
+            }
+
+            errorFiles.Clear();
+            return sb.ToString();
         }
 
         private bool FtpUpload(HostData hostData, String folder, String file)
         {
 
             Stream streamRequest = null;
+            FileStream fs = null;
 
             try
             {
+                fs = File.OpenRead(file);
+
                 request = WebRequest.Create(new Uri(String.Format(@"ftp://{0}{1}/{2}/{3}", hostData.IP, hostData.UploadPath, folder, Path.GetFileName(file)))) as FtpWebRequest;
                 request.Credentials = new NetworkCredential(hostData.ID, hostData.PW);
                 request.Method = WebRequestMethods.Ftp.UploadFile;
 
                 streamRequest = request.GetRequestStream();
+
+
+                byte[] byteBuffer = new byte[1024];
+
+                while (true)
+                {
+                    int byteLength = fs.Read(byteBuffer, 0, byteBuffer.Length);
+
+                    if (byteLength == 0) break;
+
+                    streamRequest.Write(byteBuffer, 0, byteLength);
+                }
+
+                fs.Close();
+                streamRequest.Close();
+
+                return true;
+
+
 
             }
             catch (WebException we)  //パスエラーがあった時、パスをDefaultにする
@@ -80,34 +156,23 @@ namespace MainFrame.Sources
                 }
                 else if (message.IndexOf("530") != -1)
                 {
-                    MessageBoxEx.Show(main, "ホストアカウントをご確認してください", "接続エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxEx.Show(main, "ホストアカウントをご確認してください", Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBoxEx.Show(main, "ホストアドレス(IP)をご確認してください","接続エラー",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxEx.Show(main, "ホストアドレス(IP)をご確認してください", Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 return false;
+
             }
-
-
-            FileStream fs = File.OpenRead(file);
-            byte[] byteBuffer = new byte[1024];
-
-            while (true)
+            catch (IOException ioe)
             {
-                int byteLength = fs.Read(byteBuffer, 0, byteBuffer.Length);
-
-                if (byteLength == 0) break;
-
-                streamRequest.Write(byteBuffer, 0, byteLength);
+                errorFiles.Add(file);
+                return true;
             }
 
-            fs.Close();
-            streamRequest.Close();
-
-            return true;
-            
+       
         }
 
     }

@@ -17,7 +17,6 @@ namespace MainFrame
     public partial class MainForm : Form
     {
 
-        static StringBuilder path = new StringBuilder(255);
         static StringBuilder host = new StringBuilder(255);
         HostData hostData;
         int origin_height;
@@ -41,16 +40,12 @@ namespace MainFrame
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-
-            INIFile.ReadIniFile(path);
-            tsc_path.Items.Add(path.ToString());
+            
+            hostData = INIFile.ReadIniHost(host);
+            tsc_path.Items.Add(hostData.LocalPath);
             tsc_path.SelectedIndex = tsc_path.Items.Count - 1;
-
-            hostData = new HostData();
-
-            INIFile.ReadIniHost(hostData, host);
-            hostData.LocalPath = path.ToString(); //ローカルパス
+            
+            this.pre_s = this.Height;
 
         }
 
@@ -88,28 +83,30 @@ namespace MainFrame
                 String ext = Path.GetExtension(fi.Name);
                 TreeNode n = new TreeNode(fi.Name);
 
-                if (!ext.Equals("") && ext.Length < 5 && !imageList.Images.ContainsKey(ext)) //拡張子が正常的かないか確認、そしてイメージリストにあるか確認
+                n.ImageKey = "voidFile.png";
+
+                if (fi.Name.IndexOf('.') != -1)
                 {
-                    try {
-                        icon = System.Drawing.Icon.ExtractAssociatedIcon(fi.FullName); //ファイルの拡張子と同じなIconを持ってくる
-                        imageList.Images.Add(ext, icon);
-                    }
-                    catch (Exception e)
+
+
+                    if (ext != null && ext != String.Empty && !imageList.Images.ContainsKey(ext)) //拡張子が正常的かないか確認、そしてイメージリストにあるか確認
                     {
+                        try
+                        {
+                            icon = System.Drawing.Icon.ExtractAssociatedIcon(fi.FullName); //ファイルの拡張子と同じIconを持ってくる
+                            imageList.Images.Add(ext, icon);
 
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
-                }
 
-                if (ext.IndexOf('.') == -1) //拡張子がなかったら
-                {
-                    n.ImageKey = "voidFile.png";
-                }
-                else
-                {
                     n.ImageKey = fi.Extension;
                 }
 
-                if (imageList.Images.IndexOfKey(fi.Extension) == -1) n.ImageKey = "voidFile.png"; //Windowにない拡張子だったら
+               // if (imageList.Images.IndexOfKey(fi.Extension) == -1) n.ImageKey = "voidFile.png"; //Windowにない拡張子だったら
 
                 n.Tag = fi.FullName;
                 node.Nodes.Add(n);
@@ -214,6 +211,7 @@ namespace MainFrame
                 {
                     moveNode(tag);
                 }
+
             }
 
             ReDrawNode();
@@ -245,6 +243,7 @@ namespace MainFrame
             foreach (FileInfo fi in di.GetFiles())
             {
                 moveNode(fi.FullName);
+
             }
         }
 
@@ -257,7 +256,17 @@ namespace MainFrame
         {
             if (!addList.Contains(tag))
             {
-                dgv.Rows.Add(Path.GetFileName(tag), Path.GetDirectoryName(tag), tag);
+                if (tag.Length < 255) {
+                    dgv.Rows.Add(Path.GetFileName(tag), Path.GetDirectoryName(tag), tag);
+                }
+                else
+                {
+                    Console.WriteLine(tag);
+                    String head = tag.Substring(0, (tag.Length / 2) - 1);
+                    String tail = tag.Substring(tag.Length / 2);
+
+                    dgv.Rows.Add(Path.GetFileName(tag), head + tail, tag);
+                }
                 selectNode.Add(tag);
             }
         }
@@ -266,14 +275,14 @@ namespace MainFrame
         {
             tsc_sort.Items.Clear();
             tsc_sort.Items.Add("名前");
-            foreach(String tag in selectNode)
+            foreach (String tag in selectNode)
             {
                 String ext = Path.GetExtension(tag);
                 if (!tsc_sort.Items.Contains(ext))
                 {
                     tsc_sort.Items.Add(ext);
                 }
-            }            
+            }
 
         }
 
@@ -379,7 +388,7 @@ namespace MainFrame
             }
 
         }
-        
+
 
         /// <summary>
         /// フォルダダイアロゴで選択したパスをNodeに代入
@@ -408,7 +417,7 @@ namespace MainFrame
             clearDictionary();
 
             String path = tsc_path.SelectedItem.ToString();
-            if (path.Equals("")) path = "C:";
+            if (path.Equals("")) path = DriveInfo.GetDrives()[0].Name;       //path = "C:";
 
             DirectoryInfo di = new DirectoryInfo(path.ToString());
             TreeNode node = new TreeNode(di.Name);
@@ -432,15 +441,19 @@ namespace MainFrame
         {
             String path = tsc_path.SelectedItem.ToString();
 
-            int lastIndex = path.LastIndexOf("\\");
+            if (path.Length < 4) return;
 
-            if (lastIndex < 2) return;
+            char sec = Path.DirectorySeparatorChar;
+            int lastIndex = path.LastIndexOf(Convert.ToString(sec));
+
+            Console.WriteLine(Convert.ToString(sec));
+            Console.WriteLine(lastIndex);
 
             path = path.Substring(0, lastIndex);
 
-            if (path.IndexOf("\\") == -1)
+            if (path.IndexOf(Convert.ToString(sec)) == -1)
             {
-                tsc_path.Items.Add(path + "\\");
+                tsc_path.Items.Add(path + Convert.ToString(sec));
             }
             else
             {
@@ -485,7 +498,7 @@ namespace MainFrame
                 if (list.ContainsKey(name))
                 {
                     list[name].Add(row);
-                    
+
                 }
                 else
                 {
@@ -496,20 +509,28 @@ namespace MainFrame
             foreach (KeyValuePair<String, List<DataGridViewRow>> pair in list)
             {
                 List<DataGridViewRow> rows = pair.Value;
-                if(rows.Count == 1)
+                if (rows.Count == 1)
                 {
                     rows[0].DefaultCellStyle.BackColor = Color.White;
                     rows[0].Cells[0].Style.ForeColor = Color.Black;
                     rows[0].Cells[1].Style.ForeColor = Color.Black;
                     continue;
                 }
-                
-                foreach(DataGridViewRow row in rows)
+
+                foreach (DataGridViewRow row in rows)
                 {
-                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                    if (row.Cells[0].Value.ToString().Contains(".fjm") || row.Cells[0].Value.ToString().Contains(".fjs"))
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Yellow;
+                        overLap = false;
+                    }
+
                 }
 
-                overLap = false;
             }
 
         }
@@ -520,14 +541,14 @@ namespace MainFrame
         /// </summary>
         private void RowSort()
         {
-            
+
             int index = tsc_sort.SelectedIndex;
             List<String> ext = new List<String>();
 
-            for (int i = 0; i < tsc_sort.Items.Count; i++) 
+            for (int i = 0; i < tsc_sort.Items.Count; i++)
             {
-                ext.Add(tsc_sort.Items[i].ToString());            
-            
+                ext.Add(tsc_sort.Items[i].ToString());
+
             }
 
             if (index == -1)
@@ -565,17 +586,14 @@ namespace MainFrame
             List<DataGridViewRow> fjm_rows = new List<DataGridViewRow>();
             List<DataGridViewRow> fjs_rows = new List<DataGridViewRow>();
 
-
-            bool isOver = true;
-
             StringBuilder ErrorMessage = new StringBuilder();
 
-            if (!overLap) ErrorMessage.Append("  重複したファイルがあります。" + "\n");
+            //if (!overLap) ErrorMessage.Append("  *重複したファイルがあります。" + "\n");
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 String ext = Path.GetExtension(row.Cells[0].Value.ToString());
-                String name = row.Cells[0].Value.ToString();
+                //String name = row.Cells[0].Value.ToString();
 
                 switch (ext)
                 {
@@ -592,42 +610,62 @@ namespace MainFrame
 
             if (fjm_rows.Count == 0)
             {
-                ErrorMessage.Append("  FJMファイルがありません。" + "\n");
+                ErrorMessage.Append("  ・FJMファイルがありません。" + "\n");
             }
 
 
             if (fjs_rows.Count == 0)
             {
-                ErrorMessage.Append("  FJSファイルがありません。" + "\n");
+                ErrorMessage.Append("  ・FJSファイルがありません。" + "\n");
             }
+
+            if (fjm_rows.Count > 1)
+            {
+                ErrorMessage.Append("  ・FJMファイルが複数です。" + "\n");
+            }
+
+            if (fjs_rows.Count > 1)
+            {
+                ErrorMessage.Append("  ・FJSファイルが複数です。" + "\n");
+            }
+
+            if (!overLap)
+            {
+                ErrorMessage.Append("  ・複数のファイルがあります。" + "\n");
+            }
+           
 
             if (ErrorMessage.Length != 0)
             {
-                MessageBoxEx.Show(this, ErrorMessage.ToString(), Resources.NULLERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxEx.Show(this, Resources.TRANCE_TYPEMISS_ERROR + ErrorMessage.ToString(), Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            StringBuilder folder_name = new StringBuilder();
+            /*StringBuilder folder_name = new StringBuilder();
 
             INIFile.ReadInCreateFolderName(folder_name, fjm_rows[0].Cells[2].Value.ToString());
 
+            if (folder_name.ToString() == null || folder_name.ToString().Equals(""))
+            {
+                MessageBoxEx.Show(this, Resources.FJM_FILETYPE_ERROR, "FJMAPエラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }*/
 
             StringBuilder file_log = new StringBuilder();
-            file_log.Append(folder_name.ToString() + "のフォルダを生成します" + '\n' + '\n');
+            String folder = fjm_rows[0].Cells[0].Value.ToString();
+            int split = folder.IndexOf('-');
 
-            foreach(DataGridViewRow row in dgv.Rows)
+            if (split == -1)
             {
-                file_log.Append(row.Cells[0].Value.ToString() + '\n');
+                MessageBoxEx.Show(this, Resources.FJM_FILETYPE_ERROR, Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-
-            if (MessageBoxEx.Show(this, file_log.ToString(), "UPLOAD FILES" , MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+            String folderName = folder.Substring(0, split);
 
             FileUpload load = new FileUpload(this, hostData, selectNode);
+            load.Uploader(folderName.ToString(), hostData);
 
-            load.Uploader(folder_name.ToString(), hostData);
-            
         }
-
 
         /// <summary>
         /// DataGridViewのRowをカウントするメソッド
@@ -673,15 +711,6 @@ namespace MainFrame
         /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(hostData.LocalPath != null && !hostData.LocalPath.Equals(""))
-            {
-                INIFile.WriteIniFile(hostData.LocalPath);
-            }
-            else
-            {
-                INIFile.WriteIniFile(tsc_path.SelectedItem.ToString());
-            }
-
             INIFile.WriteIniHost(hostData);
         }
 
@@ -721,13 +750,27 @@ namespace MainFrame
             Application.Exit();
         }
 
+        int pre_s;
+        int div;
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            int move_y = this.Height - origin_height;
-            btn_insert.Location = new Point(btn_insert.Location.X, btn_insert.Location.Y + (int)(move_y * 0.4));
-            btn_remove.Location = new Point(btn_remove.Location.X, btn_remove.Location.Y + (int)(move_y * 0.4));
+            int s = this.Height;
+            int ps;
 
-            origin_height = this.Height;
+            if (this.MinimumSize.Height > s) return;
+
+            ps = s - (pre_s == 0 ? this.Height : pre_s);
+            
+            div += ps;
+            int ratio = div / 2;
+            div %= 2;
+
+            btn_insert.Location = new Point(btn_insert.Location.X, btn_insert.Location.Y + ratio);
+            btn_remove.Location = new Point(btn_remove.Location.X, btn_remove.Location.Y + ratio);
+
+            pre_s = s;
+
+            this.Refresh();
         }
 
     }

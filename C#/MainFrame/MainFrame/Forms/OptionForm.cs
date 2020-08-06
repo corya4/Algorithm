@@ -33,6 +33,7 @@ namespace MainFrame.Frame
             txt_ip.Text = hostData.IP;
             txt_host.Text = hostData.UploadPath;
             txt_localPath.Text = hostData.LocalPath;
+            txt_port.Text = hostData.PortNumber;
 
         }
 
@@ -54,9 +55,9 @@ namespace MainFrame.Frame
                 tmpDir = txt_host.Text.Substring(3);
             }
 
-            Console.WriteLine(tmpDir);
             hostData.UploadPath = tmpDir;
             hostData.LocalPath = txt_localPath.Text;
+            hostData.PortNumber = txt_port.Text;
 
             this.Close();
         }

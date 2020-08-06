@@ -21,45 +21,38 @@ namespace MainFrame.INI
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(String section, String key, String def, StringBuilder retVal, int size, String filePath);
 
-        public static StringBuilder ReadIniFile(StringBuilder sb)
-        {
-            try
-            {
-                GetPrivateProfileString("STARTPATH", "LOAD", "", sb, sb.Capacity, ini_path);
-            }
-            catch (Exception e)
-            {
-                File.Create(ini_path);
-            }
-            return sb;
-        }
 
-        public static void WriteIniFile(String lastPath)
+        public static HostData ReadIniHost(StringBuilder sb)
         {
-            WritePrivateProfileString("STARTPATH", "LOAD", lastPath, ini_path);
-        }
+            HostData host = new HostData();
 
-
-        public static StringBuilder ReadIniHost(HostData host, StringBuilder sb)
-        {
             try
             {
                 GetPrivateProfileString("HOSTDATA", "IP", "", sb, sb.Capacity, ini_path);
                 host.IP = sb.ToString();
+
+                Crypto cry = new Crypto();
+                GetPrivateProfileString("HOSTDATA", "ID", "", sb, sb.Capacity, ini_path);
+                String HID = cry.Result(1, sb.ToString());
+                host.ID = (HID == null) ? "" : HID;
+                GetPrivateProfileString("HOSTDATA", "PW", "", sb, sb.Capacity, ini_path);
+                String HPW = cry.Result(1, sb.ToString());
+                host.PW = (HPW == null) ? "" : HPW;
+
                 GetPrivateProfileString("HOSTDATA", "HOSTPATH", "", sb, sb.Capacity, ini_path);
                 host.UploadPath = sb.ToString();
-                GetPrivateProfileString("HOSTDATA", "ID", "", sb, sb.Capacity, ini_path);
-                host.ID = sb.ToString();
-                GetPrivateProfileString("HOSTDATA", "PW", "", sb, sb.Capacity, ini_path);
-                host.PW = sb.ToString();
+                GetPrivateProfileString("HOSTDATA", "PORT", "", sb, sb.Capacity, ini_path);
+                host.PortNumber = sb.ToString().Equals("") ? "21" : sb.ToString();
+                GetPrivateProfileString("HOSTDATA", "LOCALPATH", "", sb, sb.Capacity, ini_path);
+                host.LocalPath = sb.ToString().Equals("") ? "" : sb.ToString();
 
             }
             catch (Exception e)
             {
-                
+                Console.WriteLine("INI READ ERROR");
             }
 
-            return sb;
+            return host;
 
         }
 
@@ -68,10 +61,18 @@ namespace MainFrame.INI
 
             try
             {
+                
                 WritePrivateProfileString("HOSTDATA", "IP", datas.IP, ini_path);
+
+                Crypto cry = new Crypto();
+                WritePrivateProfileString("HOSTDATA", "ID", datas.ID == null ? "" : cry.Result(0, datas.ID), ini_path);
+                WritePrivateProfileString("HOSTDATA", "PW", datas.PW == null ? "" : cry.Result(0, datas.PW), ini_path);
+                
                 WritePrivateProfileString("HOSTDATA", "HOSTPATH", datas.UploadPath, ini_path);
-                WritePrivateProfileString("HOSTDATA", "ID", datas.ID, ini_path);
-                WritePrivateProfileString("HOSTDATA", "PW", datas.PW, ini_path);
+                WritePrivateProfileString("HOSTDATA", "PORT", datas.PortNumber == null ? "21" : datas.PortNumber, ini_path);
+                WritePrivateProfileString("HOSTDATA", "LOCALPATH", datas.LocalPath, ini_path);
+
+                
 
             } catch (Exception e)
             {
@@ -80,10 +81,9 @@ namespace MainFrame.INI
         }
 
 
-        public static void ReadInCreateFolderName(StringBuilder sb, String fjm_path)
-        {
-            GetPrivateProfileString("HEADER", "TPNO", "", sb, sb.Capacity, fjm_path);
-        }
 
     }
+
+
+    
 }

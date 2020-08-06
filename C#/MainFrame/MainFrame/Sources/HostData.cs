@@ -14,7 +14,7 @@ namespace MainFrame.Sources
         public String IP { get; set; }
         public String UploadPath { get; set; }
         public String LocalPath { get; set; }
-
+        public String PortNumber { get; set; }
 
     }
 }

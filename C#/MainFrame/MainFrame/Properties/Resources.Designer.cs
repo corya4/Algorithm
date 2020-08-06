@@ -79,11 +79,47 @@ namespace MainFrame.Properties {
         }
         
         /// <summary>
+        ///   CONFIRM に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string CONFIRM {
+            get {
+                return ResourceManager.GetString("CONFIRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   の名前でフォルダを生成しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ConFirm_MessageCont {
+            get {
+                return ResourceManager.GetString("ConFirm_MessageCont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   に接続 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Connect {
             get {
                 return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   エラー に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ERROR {
+            get {
+                return ResourceManager.GetString("ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   項目が見つかりません。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ERROR_NOTSEARCH {
+            get {
+                return ResourceManager.GetString("ERROR_NOTSEARCH", resourceCulture);
             }
         }
         
@@ -102,6 +138,25 @@ namespace MainFrame.Properties {
         internal static string EXT_FJS {
             get {
                 return ResourceManager.GetString("EXT_FJS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   品種を取得できませんでした。FJMファイル名をご確認ください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string FJM_FILETYPE_ERROR {
+            get {
+                return ResourceManager.GetString("FJM_FILETYPE_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FTPサーバーに接続できません。
+        ///設定メニューでサーバーのアドレスやアップロードパスをご確認ください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string HOST_CONNECT_ERROR {
+            get {
+                return ResourceManager.GetString("HOST_CONNECT_ERROR", resourceCulture);
             }
         }
         
@@ -142,11 +197,11 @@ namespace MainFrame.Properties {
         }
         
         /// <summary>
-        ///   NULL ERROR に類似しているローカライズされた文字列を検索します。
+        ///   ログインされていません に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string NULLERROR {
+        internal static string NOTLOGIN {
             get {
-                return ResourceManager.GetString("NULLERROR", resourceCulture);
+                return ResourceManager.GetString("NOTLOGIN", resourceCulture);
             }
         }
         
@@ -174,6 +229,26 @@ namespace MainFrame.Properties {
         internal static string SELECTERROR {
             get {
                 return ResourceManager.GetString("SELECTERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FTPサーバーにログインできません。
+        ///設定メニューでユーザー名又はパスワードをご確認ください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string SERVER_LOGIN_ERROR {
+            get {
+                return ResourceManager.GetString("SERVER_LOGIN_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   登録できませんでした。下記の内容をご確認ください。
+        /// に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TRANCE_TYPEMISS_ERROR {
+            get {
+                return ResourceManager.GetString("TRANCE_TYPEMISS_ERROR", resourceCulture);
             }
         }
         

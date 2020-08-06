@@ -40,6 +40,8 @@
             this.lbl_ip = new System.Windows.Forms.Label();
             this.lbl_host = new System.Windows.Forms.Label();
             this.grb_host = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txt_port = new System.Windows.Forms.TextBox();
             this.grb_local = new System.Windows.Forms.GroupBox();
             this.btn_OpenDialog = new System.Windows.Forms.Button();
             this.txt_localPath = new System.Windows.Forms.TextBox();
@@ -54,15 +56,16 @@
             this.txt_id.Margin = new System.Windows.Forms.Padding(4);
             this.txt_id.Name = "txt_id";
             this.txt_id.Size = new System.Drawing.Size(166, 22);
-            this.txt_id.TabIndex = 0;
+            this.txt_id.TabIndex = 1;
             // 
             // txt_pw
             // 
             this.txt_pw.Location = new System.Drawing.Point(147, 105);
             this.txt_pw.Margin = new System.Windows.Forms.Padding(4);
             this.txt_pw.Name = "txt_pw";
+            this.txt_pw.PasswordChar = '●';
             this.txt_pw.Size = new System.Drawing.Size(166, 22);
-            this.txt_pw.TabIndex = 1;
+            this.txt_pw.TabIndex = 2;
             // 
             // txt_ip
             // 
@@ -70,7 +73,7 @@
             this.txt_ip.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ip.Name = "txt_ip";
             this.txt_ip.Size = new System.Drawing.Size(166, 22);
-            this.txt_ip.TabIndex = 2;
+            this.txt_ip.TabIndex = 0;
             // 
             // txt_host
             // 
@@ -82,22 +85,22 @@
             // 
             // btn_OK
             // 
-            this.btn_OK.Location = new System.Drawing.Point(66, 294);
+            this.btn_OK.Location = new System.Drawing.Point(66, 287);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(4);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(141, 33);
-            this.btn_OK.TabIndex = 4;
+            this.btn_OK.TabIndex = 7;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
             this.btn_OK.Click += new System.EventHandler(this.OK_button_Click);
             // 
             // btn_CANCEL
             // 
-            this.btn_CANCEL.Location = new System.Drawing.Point(215, 294);
+            this.btn_CANCEL.Location = new System.Drawing.Point(215, 287);
             this.btn_CANCEL.Margin = new System.Windows.Forms.Padding(4);
             this.btn_CANCEL.Name = "btn_CANCEL";
             this.btn_CANCEL.Size = new System.Drawing.Size(145, 33);
-            this.btn_CANCEL.TabIndex = 5;
+            this.btn_CANCEL.TabIndex = 8;
             this.btn_CANCEL.Text = "キャンセル";
             this.btn_CANCEL.UseVisualStyleBackColor = true;
             this.btn_CANCEL.Click += new System.EventHandler(this.CANCEL_button_Click);
@@ -144,6 +147,8 @@
             // 
             // grb_host
             // 
+            this.grb_host.Controls.Add(this.label1);
+            this.grb_host.Controls.Add(this.txt_port);
             this.grb_host.Controls.Add(this.lbl_host);
             this.grb_host.Controls.Add(this.lbl_pw);
             this.grb_host.Controls.Add(this.lbl_ip);
@@ -156,17 +161,37 @@
             this.grb_host.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grb_host.Name = "grb_host";
             this.grb_host.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.grb_host.Size = new System.Drawing.Size(339, 190);
-            this.grb_host.TabIndex = 10;
+            this.grb_host.Size = new System.Drawing.Size(339, 183);
+            this.grb_host.TabIndex = 2;
             this.grb_host.TabStop = false;
             this.grb_host.Text = "HOST";
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(21, 187);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 20);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "ポート番号";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Visible = false;
+            // 
+            // txt_port
+            // 
+            this.txt_port.Location = new System.Drawing.Point(147, 187);
+            this.txt_port.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_port.Name = "txt_port";
+            this.txt_port.Size = new System.Drawing.Size(166, 22);
+            this.txt_port.TabIndex = 4;
+            this.txt_port.Visible = false;
             // 
             // grb_local
             // 
             this.grb_local.Controls.Add(this.btn_OpenDialog);
             this.grb_local.Controls.Add(this.txt_localPath);
             this.grb_local.Controls.Add(this.lbl_localPath);
-            this.grb_local.Location = new System.Drawing.Point(21, 206);
+            this.grb_local.Location = new System.Drawing.Point(21, 199);
             this.grb_local.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grb_local.Name = "grb_local";
             this.grb_local.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -184,7 +209,7 @@
             this.btn_OpenDialog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_OpenDialog.Name = "btn_OpenDialog";
             this.btn_OpenDialog.Size = new System.Drawing.Size(35, 25);
-            this.btn_OpenDialog.TabIndex = 11;
+            this.btn_OpenDialog.TabIndex = 6;
             this.btn_OpenDialog.UseVisualStyleBackColor = false;
             this.btn_OpenDialog.Click += new System.EventHandler(this.FolderDialog_OPen_Click);
             // 
@@ -194,7 +219,7 @@
             this.txt_localPath.Margin = new System.Windows.Forms.Padding(4);
             this.txt_localPath.Name = "txt_localPath";
             this.txt_localPath.Size = new System.Drawing.Size(264, 22);
-            this.txt_localPath.TabIndex = 10;
+            this.txt_localPath.TabIndex = 5;
             // 
             // lbl_localPath
             // 
@@ -209,14 +234,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(380, 340);
+            this.ClientSize = new System.Drawing.Size(380, 335);
             this.Controls.Add(this.grb_local);
             this.Controls.Add(this.grb_host);
             this.Controls.Add(this.btn_CANCEL);
             this.Controls.Add(this.btn_OK);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(398, 382);
+            this.MinimumSize = new System.Drawing.Size(398, 382);
             this.Name = "ConfirmForm";
             this.ShowIcon = false;
             this.Text = "ホスト設定";
@@ -246,5 +274,7 @@
         private System.Windows.Forms.TextBox txt_localPath;
         private System.Windows.Forms.Label lbl_localPath;
         private System.Windows.Forms.Button btn_OpenDialog;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txt_port;
     }
 }
