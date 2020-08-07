@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\ENITEC\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\ENITEC\\.nuget\\packages"
+    ]
+  }
+}
