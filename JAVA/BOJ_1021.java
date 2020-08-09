@@ -25,54 +25,57 @@ public class BOJ_1021 {
 		
 		int count = 0;
 		int n = 0;
-		int l = index.length-1;
+		int l = index.length;
 		int v = index[n];
-		int[] copy_index = Arrays.copyOf(index, index.length);
+		int[] copy_index = index.clone();
 		
 		while(n < l) {
+			
 			if(deque.peekFirst() == v) {
-				v = index[++n];
 				deque.pollFirst();
+				change_index(copy_index, n, -1, length);
 				length--;
-				change_index(copy_index, -1, true);
+				n++;
+				if(n < index.length) v = index[n];
 				continue;
+				
 			}
 			
-			if(copy_index[n] > length) {
-				change_index(copy_index, 1, false);
+			if(copy_index[n] > half_length(length)) {
+				change_index(copy_index, n, 1, length);
 				int temp = deque.pollLast();
 				deque.addFirst(temp);
 				
 			}else {
-				change_index(copy_index, -1, false);
+				change_index(copy_index, n, -1, length);
 				int temp = deque.pollFirst();
 				deque.addLast(temp);
 			}
 			
 			count++;
 		}
-		
 		System.out.println(count);
 	}
 	
-	static void change_index(int[] index, int d, boolean flag) {
+	static void change_index(int[] index, int num, int d, int length) {
 		
-		if(flag) {
-			int[] t_index = new int[index.length-1];
-			System.arraycopy(index, 1, t_index, 0, index.length);
-		}
-			
-		for(int i = 0; i < index.length; i++) {
-			index[i]+=d;
+		for(int i = num; i < index.length; i++) {
+			index[i] = index[i] + d;
 				
-			if(index[i] == 0) index[i] = index.length;
-			else if(index[i] < index.length) index[i] = 1; 
+			if(index[i] == 0) index[i] = length;
+			else if(index[i] > length) index[i] = 1; 
+			
 		}
-		
-		System.out.println(Arrays.toString(index));
 	}
 	
+	static int half_length(int length) {
+		
+		return length%2 == 0 ? length/2 : (length/2) +1 ;
+	}
 }
+
+
+
 
 
 
