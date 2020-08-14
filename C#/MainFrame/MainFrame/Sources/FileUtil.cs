@@ -45,6 +45,10 @@ namespace MainFrame.INI
                 host.PortNumber = sb.ToString().Equals("") ? "21" : sb.ToString();
                 GetPrivateProfileString("HOSTDATA", "LOCALPATH", "", sb, sb.Capacity, ini_path);
                 host.LocalPath = sb.ToString().Equals("") ? "" : sb.ToString();
+                GetPrivateProfileString("HOSTDATA", "LOGFILEPATH", "", sb, sb.Capacity, ini_path);
+                host.LogFilePath = sb.ToString();
+                GetPrivateProfileString("HOSTDATA", "LOGWRITED", "", sb, sb.Capacity, ini_path);
+                host.LogWrited = sb.ToString();
 
             }
             catch (Exception e)
@@ -71,8 +75,8 @@ namespace MainFrame.INI
                 WritePrivateProfileString("HOSTDATA", "HOSTPATH", datas.UploadPath, ini_path);
                 WritePrivateProfileString("HOSTDATA", "PORT", datas.PortNumber == null ? "21" : datas.PortNumber, ini_path);
                 WritePrivateProfileString("HOSTDATA", "LOCALPATH", datas.LocalPath, ini_path);
-
-                
+                WritePrivateProfileString("HOSTDATA", "LOGFILEPATH", datas.LogFilePath, ini_path);
+                WritePrivateProfileString("HOSTDATA", "LOGWRITED", datas.LogWrited, ini_path);
 
             } catch (Exception e)
             {

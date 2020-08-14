@@ -1,9 +1,12 @@
-﻿using MainFrame.Sources;
+﻿using MainFrame.Forms;
+using MainFrame.Sources;
+using mem_hkj;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +16,7 @@ namespace MainFrame.Frame
 {
     public partial class ConfirmForm : Form
     {
-
+        MainForm main;
         HostData hostData;
 
         private void ConfirmForm_Load(object sender, EventArgs e) {}
@@ -22,11 +25,12 @@ namespace MainFrame.Frame
         /// 生成する時、値を入力
         /// </summary>
         /// <param name="data"></param>
-        public ConfirmForm(HostData data)
+        public ConfirmForm(MainForm main, HostData data)
         {
             InitializeComponent();
             
             hostData = data;
+            this.main = main;
 
             txt_id.Text = hostData.ID;
             txt_pw.Text = hostData.PW;
@@ -34,6 +38,10 @@ namespace MainFrame.Frame
             txt_host.Text = hostData.UploadPath;
             txt_localPath.Text = hostData.LocalPath;
             txt_port.Text = hostData.PortNumber;
+            txt_LogPath.Text = hostData.LogFilePath;
+            cbx_logWrite.Checked = hostData.LogWrited.Equals("true") ? true : false;
+
+            main.status = -1;
 
         }
 
@@ -58,6 +66,26 @@ namespace MainFrame.Frame
             hostData.UploadPath = tmpDir;
             hostData.LocalPath = txt_localPath.Text;
             hostData.PortNumber = txt_port.Text;
+            hostData.LogFilePath = txt_LogPath.Text;
+            hostData.LogWrited = cbx_logWrite.Checked ? "true" : "false";
+
+            main.status = 0;
+
+            if (cbx_logWrite.Checked)
+            {
+                if (!File.Exists(txt_LogPath.Text))
+                {
+                    if (MessageBoxEx.Show(main, "ログファイルが見つかりません。ログ作成をしなくて続けますか？", "パスエラー", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
+                        != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    cbx_logWrite.Checked = false;
+                    hostData.LogWrited = "false";
+
+                }
+            }
 
             this.Close();
         }
@@ -85,6 +113,23 @@ namespace MainFrame.Frame
             if (folderDlog.ShowDialog() != DialogResult.OK) return;
 
             txt_localPath.Text = folderDlog.SelectedPath;
+        }
+
+        private void btn_LogDialog_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog oDlog = new OpenFileDialog();
+
+            if (oDlog.ShowDialog() != DialogResult.OK) return;
+
+            txt_LogPath.Text = oDlog.FileName;
+            
+        }
+
+
+        private void cbx_logWrite_CheckStateChanged(object sender, EventArgs e)
+        {
+            txt_LogPath.Enabled = cbx_logWrite.Checked;
+            btn_LogDialog.Enabled = cbx_logWrite.Checked;
         }
     }
 }

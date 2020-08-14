@@ -15,6 +15,8 @@ namespace MainFrame.Sources
         public String UploadPath { get; set; }
         public String LocalPath { get; set; }
         public String PortNumber { get; set; }
+        public String LogFilePath { get; set; }
+        public String LogWrited { get; set; }
 
     }
 }

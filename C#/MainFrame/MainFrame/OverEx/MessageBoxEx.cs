@@ -11,14 +11,17 @@ namespace mem_hkj
 	using System.Text;
 	using System.Drawing;
 	using System.Runtime.InteropServices;
+    using MainFrame;
 
-	public class MessageBoxEx
+    public class MessageBoxEx
 	{
 		private static IWin32Window _owner;
 		private static HookProc _hookProc;
 		private static IntPtr _hHook;
+        private MainForm main;
+        private string v;
 
-		public static DialogResult Show(string text)
+        public static DialogResult Show(string text)
 		{
 			Initialize();
 			return MessageBox.Show(text);
@@ -166,7 +169,13 @@ namespace mem_hkj
 			_hHook = IntPtr.Zero;
 		}
 
-		private static void Initialize()
+        public MessageBoxEx(MainForm main, string v, string v1)
+        {
+            this.main = main;
+            this.v = v;
+        }
+
+        private static void Initialize()
 		{
 			if (_hHook != IntPtr.Zero)
 			{

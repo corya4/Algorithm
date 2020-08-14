@@ -1,4 +1,5 @@
-﻿using MainFrame.Frame;
+﻿using MainFrame.Forms;
+using MainFrame.Frame;
 using MainFrame.INI;
 using MainFrame.Properties;
 using MainFrame.Sources;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace MainFrame
@@ -40,13 +42,10 @@ namespace MainFrame
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
             hostData = INIFile.ReadIniHost(host);
             tsc_path.Items.Add(hostData.LocalPath);
             tsc_path.SelectedIndex = tsc_path.Items.Count - 1;
-            
             this.pre_s = this.Height;
-
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace MainFrame
                 }
                 catch (Exception ex)
                 {
-
+                    //技能なし
                 }
             }
 
@@ -88,7 +87,6 @@ namespace MainFrame
                 if (fi.Name.IndexOf('.') != -1)
                 {
 
-
                     if (ext != null && ext != String.Empty && !imageList.Images.ContainsKey(ext)) //拡張子が正常的かないか確認、そしてイメージリストにあるか確認
                     {
                         try
@@ -99,20 +97,15 @@ namespace MainFrame
                         }
                         catch (Exception e)
                         {
-
+                            //技能なし
                         }
                     }
 
                     n.ImageKey = fi.Extension;
                 }
-
-               // if (imageList.Images.IndexOfKey(fi.Extension) == -1) n.ImageKey = "voidFile.png"; //Windowにない拡張子だったら
-
                 n.Tag = fi.FullName;
                 node.Nodes.Add(n);
-
             }
-
 
         }
 
@@ -136,7 +129,6 @@ namespace MainFrame
         private void Tree_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             ExpandNode(e.Node);
-
         }
 
 
@@ -146,11 +138,9 @@ namespace MainFrame
         /// <param name="e"></param>
         private void ExpandNode(TreeNode e)
         {
-
             e.Nodes.Clear();
             DirectoryInfo di = new DirectoryInfo(e.Tag.ToString());
             CreateDirectoryNode(di, e);
-
             ReDrawNode();
         }
 
@@ -186,7 +176,6 @@ namespace MainFrame
         }
 
 
-
         /// <summary>
         /// >>ボタンを押した時のイベント
         /// </summary>
@@ -195,9 +184,7 @@ namespace MainFrame
         private void Insert_File_Click(object sender, EventArgs e)
         {
             if (treeView.SelectedNodes == null) return;
-
             GetDataRowFullPath();
-
             foreach (TreeNode node in treeView.SelectedNodes)
             {
 
@@ -217,13 +204,10 @@ namespace MainFrame
             ReDrawNode();
             Sort_EXT();
             clearSelected();
-
             RowSort();
             RowCheck();
             Header_Count();
-
         }
-
 
 
         /// <summary>
@@ -232,9 +216,7 @@ namespace MainFrame
         /// <param name="tag"></param>
         private void moveNodes(String tag)
         {
-
             DirectoryInfo di = new DirectoryInfo(tag);
-
             foreach (DirectoryInfo dir in di.GetDirectories())
             {
                 moveNodes(dir.FullName);
@@ -274,7 +256,7 @@ namespace MainFrame
         private void Sort_EXT()
         {
             tsc_sort.Items.Clear();
-            tsc_sort.Items.Add("名前");
+            tsc_sort.Items.Add(Resources.NAME);
             foreach (String tag in selectNode)
             {
                 String ext = Path.GetExtension(tag);
@@ -353,7 +335,6 @@ namespace MainFrame
         /// </summary>
         private void ReDrawNode()
         {
-
             ReDrawNode(treeView.Nodes[0]);
         }
 
@@ -580,6 +561,7 @@ namespace MainFrame
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        public StringBuilder logs { get; set; }
         private void btn_Upload_Click(object sender, EventArgs e)
         {
 
@@ -587,13 +569,9 @@ namespace MainFrame
             List<DataGridViewRow> fjs_rows = new List<DataGridViewRow>();
 
             StringBuilder ErrorMessage = new StringBuilder();
-
-            //if (!overLap) ErrorMessage.Append("  *重複したファイルがあります。" + "\n");
-
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 String ext = Path.GetExtension(row.Cells[0].Value.ToString());
-                //String name = row.Cells[0].Value.ToString();
 
                 switch (ext)
                 {
@@ -604,52 +582,33 @@ namespace MainFrame
                         fjs_rows.Add(row);
                         break;
                 }
-
-
             }
 
             if (fjm_rows.Count == 0)
             {
                 ErrorMessage.Append("  ・FJMファイルがありません。" + "\n");
             }
-
-
             if (fjs_rows.Count == 0)
             {
                 ErrorMessage.Append("  ・FJSファイルがありません。" + "\n");
             }
-
             if (fjm_rows.Count > 1)
             {
                 ErrorMessage.Append("  ・FJMファイルが複数です。" + "\n");
             }
-
             if (fjs_rows.Count > 1)
             {
                 ErrorMessage.Append("  ・FJSファイルが複数です。" + "\n");
             }
-
             if (!overLap)
             {
                 ErrorMessage.Append("  ・複数のファイルがあります。" + "\n");
             }
-           
-
             if (ErrorMessage.Length != 0)
             {
                 MessageBoxEx.Show(this, Resources.TRANCE_TYPEMISS_ERROR + ErrorMessage.ToString(), Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            /*StringBuilder folder_name = new StringBuilder();
-
-            INIFile.ReadInCreateFolderName(folder_name, fjm_rows[0].Cells[2].Value.ToString());
-
-            if (folder_name.ToString() == null || folder_name.ToString().Equals(""))
-            {
-                MessageBoxEx.Show(this, Resources.FJM_FILETYPE_ERROR, "FJMAPエラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }*/
 
             StringBuilder file_log = new StringBuilder();
             String folder = fjm_rows[0].Cells[0].Value.ToString();
@@ -663,7 +622,13 @@ namespace MainFrame
             String folderName = folder.Substring(0, split);
 
             FileUpload load = new FileUpload(this, hostData, selectNode);
-            load.Uploader(folderName.ToString(), hostData);
+
+            if (load.Uploader(folderName.ToString()))
+            {
+                LogForm log = new LogForm(logs);
+                log.ShowDialog();
+            }
+
 
         }
 
@@ -682,16 +647,11 @@ namespace MainFrame
                 if (ext.Equals(Resources.EXT_FJM))
                 {
 
-                    //Meiryo UI, 10.2pt
                     row.DefaultCellStyle.Font = f;
-                    //row.Cells[0].Style.ForeColor = Color.DarkViolet;
-                    //row.Cells[1].Style.ForeColor = Color.DarkViolet;
                 }
                 else if (ext.Equals(Resources.EXT_FJS))
                 {
                     row.DefaultCellStyle.Font = f;
-                    //row.Cells[0].Style.ForeColor = Color.BlueViolet;
-                    //row.Cells[1].Style.ForeColor = Color.BlueViolet;
                 }
                 else
                 {
@@ -727,6 +687,7 @@ namespace MainFrame
         }
 
 
+        public int status;
         /// <summary>
         /// サーバーの情報を再確認するフォムをOpenするイベント
         /// </summary>
@@ -734,11 +695,52 @@ namespace MainFrame
         /// <param name="e"></param>
         private void HostData_Setting_Click(object sender, EventArgs e)
         {
-            ConfirmForm confirm = new ConfirmForm(hostData);
+            ConfirmForm confirm = new ConfirmForm(this, hostData);
             confirm.ShowDialog();
+
+            if (status == 0)
+            {
+                FileUpload upload = new FileUpload(this, hostData, null);
+
+                LoadingForm loading = new LoadingForm(this);
+                loading.Login = (()
+                    =>
+                {
+                    upload._ConnectHost();
+                });
+                loading.Message = (()
+                    =>
+                {
+                    upload._ErrorMessage();
+                });
+
+                
+
+                Thread thread = new Thread(() =>
+                {
+                    loading.ShowDialog();
+                });
+
+                thread.Start();
+
+                if (!thread.Join(2000))
+                {
+                    loading.Invoke((Action)(() => 
+                    {
+                        if (loading.Focused)
+                        {
+                            loading.Close();
+                            MessageBoxEx.Show(this, "サーバーに接続ができません。", Resources.ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                    }));
+                }
+
+                upload._CloseProcess();
+
+            }
+
         }
-
-
 
         /// <summary>
         /// 閉めるメニューを選択する時のイベント

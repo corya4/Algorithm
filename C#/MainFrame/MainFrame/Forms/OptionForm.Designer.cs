@@ -43,6 +43,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txt_port = new System.Windows.Forms.TextBox();
             this.grb_local = new System.Windows.Forms.GroupBox();
+            this.cbx_logWrite = new System.Windows.Forms.CheckBox();
+            this.btn_LogDialog = new System.Windows.Forms.Button();
+            this.txt_LogPath = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.btn_OpenDialog = new System.Windows.Forms.Button();
             this.txt_localPath = new System.Windows.Forms.TextBox();
             this.lbl_localPath = new System.Windows.Forms.Label();
@@ -85,7 +89,7 @@
             // 
             // btn_OK
             // 
-            this.btn_OK.Location = new System.Drawing.Point(66, 287);
+            this.btn_OK.Location = new System.Drawing.Point(66, 352);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(4);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(141, 33);
@@ -96,7 +100,7 @@
             // 
             // btn_CANCEL
             // 
-            this.btn_CANCEL.Location = new System.Drawing.Point(215, 287);
+            this.btn_CANCEL.Location = new System.Drawing.Point(215, 352);
             this.btn_CANCEL.Margin = new System.Windows.Forms.Padding(4);
             this.btn_CANCEL.Name = "btn_CANCEL";
             this.btn_CANCEL.Size = new System.Drawing.Size(145, 33);
@@ -188,6 +192,10 @@
             // 
             // grb_local
             // 
+            this.grb_local.Controls.Add(this.cbx_logWrite);
+            this.grb_local.Controls.Add(this.btn_LogDialog);
+            this.grb_local.Controls.Add(this.txt_LogPath);
+            this.grb_local.Controls.Add(this.label2);
             this.grb_local.Controls.Add(this.btn_OpenDialog);
             this.grb_local.Controls.Add(this.txt_localPath);
             this.grb_local.Controls.Add(this.lbl_localPath);
@@ -195,10 +203,53 @@
             this.grb_local.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grb_local.Name = "grb_local";
             this.grb_local.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.grb_local.Size = new System.Drawing.Size(339, 82);
+            this.grb_local.Size = new System.Drawing.Size(339, 147);
             this.grb_local.TabIndex = 11;
             this.grb_local.TabStop = false;
             this.grb_local.Text = "LOCAL";
+            // 
+            // cbx_logWrite
+            // 
+            this.cbx_logWrite.Location = new System.Drawing.Point(211, 86);
+            this.cbx_logWrite.Name = "cbx_logWrite";
+            this.cbx_logWrite.Size = new System.Drawing.Size(122, 17);
+            this.cbx_logWrite.TabIndex = 11;
+            this.cbx_logWrite.Text = "ファイル作成";
+            this.cbx_logWrite.UseVisualStyleBackColor = true;
+            this.cbx_logWrite.CheckedChanged += new System.EventHandler(this.cbx_logWrite_CheckStateChanged);
+            this.cbx_logWrite.CheckStateChanged += new System.EventHandler(this.cbx_logWrite_CheckStateChanged);
+            // 
+            // btn_LogDialog
+            // 
+            this.btn_LogDialog.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_LogDialog.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_LogDialog.BackgroundImage")));
+            this.btn_LogDialog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btn_LogDialog.Enabled = false;
+            this.btn_LogDialog.Location = new System.Drawing.Point(283, 108);
+            this.btn_LogDialog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_LogDialog.Name = "btn_LogDialog";
+            this.btn_LogDialog.Size = new System.Drawing.Size(35, 25);
+            this.btn_LogDialog.TabIndex = 9;
+            this.btn_LogDialog.UseVisualStyleBackColor = false;
+            this.btn_LogDialog.Click += new System.EventHandler(this.btn_LogDialog_Click);
+            // 
+            // txt_LogPath
+            // 
+            this.txt_LogPath.Enabled = false;
+            this.txt_LogPath.Location = new System.Drawing.Point(15, 110);
+            this.txt_LogPath.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_LogPath.Name = "txt_LogPath";
+            this.txt_LogPath.Size = new System.Drawing.Size(264, 22);
+            this.txt_LogPath.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 88);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "ログファイル";
             // 
             // btn_OpenDialog
             // 
@@ -236,15 +287,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(380, 335);
+            this.ClientSize = new System.Drawing.Size(380, 404);
             this.Controls.Add(this.grb_local);
             this.Controls.Add(this.grb_host);
             this.Controls.Add(this.btn_CANCEL);
             this.Controls.Add(this.btn_OK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(398, 382);
-            this.MinimumSize = new System.Drawing.Size(398, 382);
+            this.MaximumSize = new System.Drawing.Size(398, 451);
+            this.MinimumSize = new System.Drawing.Size(398, 451);
             this.Name = "ConfirmForm";
             this.ShowIcon = false;
             this.Text = "ホスト設定";
@@ -276,5 +327,9 @@
         private System.Windows.Forms.Button btn_OpenDialog;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txt_port;
+        private System.Windows.Forms.Button btn_LogDialog;
+        private System.Windows.Forms.TextBox txt_LogPath;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cbx_logWrite;
     }
 }
