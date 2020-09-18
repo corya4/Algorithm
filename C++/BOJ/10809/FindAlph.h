@@ -1,15 +1,14 @@
 
 #include <string>
+using namespace std;
 
 class Alpa {
 
 private:
-	static char alpa[24];
+	char alpa[26];
 
-public :
+public:
 	Alpa();
 	void GetAlpa();
-	void GetIndex(string str);
-
-
+	void GetIndex(char str[]);
 };

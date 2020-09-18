@@ -1,37 +1,37 @@
 
 #include <iostream>
-#include <string>
 #include "FindAlph.h"
-
-using namespace std;
 
 Alpa::Alpa() {
 	GetAlpa();
 }
 
 void Alpa::GetAlpa() {
-
-	for (int i = 0; i < 24; i++) {
-		alpa[i] = (char)(48 + i);
+	for (int i = 0; i < 26; i++) {
+		Alpa::alpa[i] = (char)(97 + i);
 	}
-
 }
 
-void Alpa::GetIndex(string str) {
-
+void Alpa::GetIndex(char str[]) {
 	int answer = -1;
 
-	for (int i = 0; i < str.length(); i++){
-		char c = str.at(i);
+	for (int i = 0; i < 26; i++) {
+		char c = Alpa::alpa[i];
 
-		for (int j = 0; j < 24; j++) {
-			if (alpa[j] == c) {
+		for (int j = 0; j < 100; j++) {
+			if (str[j] == c) {
 				answer = j;
+				break;
 			}
 		}
 
-		cout << answer + " ";
+		if (i != 25) {
+			cout << answer << " ";
+		}
+		else {
+			cout << answer;
+		}
+			
 		answer = -1;
 	}
-
 }
