@@ -1,19 +1,19 @@
-
-#include "FindAlph.h";
 #include <iostream>
+#include "wordStu.h";
 
 using namespace std;
 
 int main(void) {
-	char cArr[100] = {'*',};
 
-	string value;
-	cin >> value;
+	WordFind wf;
+	string str;
 	
-	for (int i = 0; i < value.length(); i++) {
-		cArr[i] = value.at(i);
+	cin >> str;
+	
+	for (int i = 0; i < str.length(); i++) {
+		wf.InputIndex(str.at(i));
 	}
+	wf.Find();
 
-	Alpa alpa;
-	alpa.GetIndex(cArr);
+	return 0;
 }
