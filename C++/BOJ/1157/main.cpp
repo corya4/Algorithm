@@ -13,7 +13,7 @@ int main(void) {
 	for (int i = 0; i < str.length(); i++) {
 		wf.InputIndex(str.at(i));
 	}
-	wf.Find();
 
-	return 0;
+	wf.Find();
+	
 }

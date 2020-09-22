@@ -3,9 +3,9 @@ using namespace std;
 
 class WordFind {
 
-	int *alpa_index[];
-
 public :
+	int alpa_index[26];
+
 	WordFind();
 	void InputIndex(char c);
 	int UpperLow(char c);
