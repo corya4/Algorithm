@@ -1,0 +1,10 @@
+C:\Users\ENITEC\source\repos\C_REF\C_REF\bin\Debug\C_REF.exe.config
+C:\Users\ENITEC\source\repos\C_REF\C_REF\bin\Debug\C_REF.exe
+C:\Users\ENITEC\source\repos\C_REF\C_REF\bin\Debug\C_REF.pdb
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.csprojAssemblyReference.cache
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.Form1.resources
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.Properties.Resources.resources
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.csproj.GenerateResource.cache
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.csproj.CoreCompileInputs.cache
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.exe
+C:\Users\ENITEC\source\repos\C_REF\C_REF\obj\Debug\C_REF.pdb
