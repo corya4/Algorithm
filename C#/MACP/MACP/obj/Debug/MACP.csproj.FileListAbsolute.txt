@@ -1,0 +1,11 @@
+C:\Users\corya\source\repos\MACP\MACP\bin\Debug\MACP.exe.config
+C:\Users\corya\source\repos\MACP\MACP\bin\Debug\MACP.exe
+C:\Users\corya\source\repos\MACP\MACP\bin\Debug\MACP.pdb
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.Form1.resources
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.Properties.Resources.resources
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.csproj.GenerateResource.cache
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.csproj.CoreCompileInputs.cache
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.exe
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.pdb
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.csprojAssemblyReference.cache
+C:\Users\corya\source\repos\MACP\MACP\obj\Debug\MACP.Forms.MaCrt.resources
